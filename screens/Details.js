@@ -1,6 +1,7 @@
 import { useRoute } from "@react-navigation/native";
 import React from "react";
 import { Entypo } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
 import {
   Dimensions,
   ImageBackground,
@@ -8,14 +9,16 @@ import {
   Text,
   View,
   ScrollView,
-  SafeAreaView,
+  Button,
+  Alert,
 } from "react-native";
-
+import { useNavigation } from "@react-navigation/native";
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
 const Details = () => {
   const route = useRoute();
+  const navigation = useNavigation();
   console.log(route);
   const place = route.params.place;
 
@@ -29,6 +32,14 @@ const Details = () => {
             imageStyle={{ borderBottomRightRadius: 70 }}
           >
             <View style={styles.detailOverlay}>
+              <AntDesign
+                onPress={() => navigation.goBack()}
+                style={styles.backArrow}
+                name="arrowleft"
+                size={26}
+                color="#fff"
+              />
+
               <View>
                 <Text style={styles.placeName}>
                   <Entypo name="location-pin" size={24} color="#fff" />
@@ -80,5 +91,10 @@ const styles = StyleSheet.create({
   },
   introText: {
     fontSize: 20,
+  },
+  backArrow: {
+    position: "absolute",
+    left: 5,
+    top: 20,
   },
 });
