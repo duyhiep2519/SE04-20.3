@@ -6,6 +6,11 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import Home from "./screens/Home";
 import Details from "./screens/Details";
+import ViewPlaces from "./screens/ViewPlaces";
+import Flight from "./components/Flight";
+import Boat from "./components/Boat";
+import Train from "./components/Train";
+import Bus from "./components/Bus";
 
 const Stack = createStackNavigator();
 
@@ -20,6 +25,11 @@ const App = () => {
       >
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Details" component={Details} />
+        <Stack.Screen name="ViewPlaces" component={ViewPlaces} />
+        <Stack.Screen name="Flight" component={Flight} />
+        <Stack.Screen name="Boat" component={Boat} />
+        <Stack.Screen name="Train" component={Train} />
+        <Stack.Screen name="Bus" component={Bus} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -1,27 +1,24 @@
-import { useRoute } from "@react-navigation/native";
+import { AntDesign, Entypo } from "@expo/vector-icons";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import React from "react";
-import { Entypo } from "@expo/vector-icons";
-import { AntDesign } from "@expo/vector-icons";
 import {
   Dimensions,
   ImageBackground,
-  StyleSheet,
+
+
+
+  ScrollView, StyleSheet,
   Text,
-  View,
-  ScrollView,
-  Button,
-  Alert,
+  View
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
 const Details = () => {
   const route = useRoute();
   const navigation = useNavigation();
-  console.log(route);
-  const place = route.params.place;
 
+  const place = route.params.place;
   return (
     <ScrollView>
       {place ? (

@@ -1,20 +1,19 @@
+import { AntDesign, Feather, MaterialIcons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
 import {
-  View,
-  Text,
-  StyleSheet,
+  Dimensions,
+  FlatList,
   Image,
   ImageBackground,
-  TouchableOpacity,
-  FlatList,
   ScrollView,
+  StyleSheet,
+  Text,
   TextInput,
-  Dimensions,
-  Button,
+  TouchableOpacity,
+  View,
 } from "react-native";
-import { Feather } from "@expo/vector-icons";
 import places from "../data/places";
-import { useNavigation } from "@react-navigation/native";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
@@ -23,60 +22,93 @@ const imageBackground = {
     "https://www.freevector.com/uploads/vector/preview/12939/FreeVector-Travel-Background.jpg",
 };
 
-//render topPlaces
-const renderTopPlaces = (item) => {
-  <View>
-    <TouchableOpacity>
-      <Image source={item.image} style={styles.imageTopPlaces} />
-    </TouchableOpacity>
-  </View>;
-};
 const Home = () => {
   const navigation = useNavigation();
+  const [searchInput, setSearchInput] = useState();
 
   return (
-    <View>
-      <ImageBackground
-        source={imageBackground}
-        style={{ width: "100%", height: windowHeight / 2.5 }}
-        imageStyle={{ borderBottomRightRadius: 70 }}
-      >
-        <View style={styles.homeOverlay}>
-          <View style={styles.homeSearch}>
-            <Feather
-              name="menu"
-              size={29}
-              color="white"
-              style={{ position: "absolute", top: 30, left: 20 }}
-            />
-            <Feather
-              name="bell"
-              size={29}
-              color="white"
-              style={{ position: "absolute", top: 38, left: windowWidth - 60 }}
-            />
-            <Text style={styles.greet}>Welcome!</Text>
-            <Text style={styles.text}>Where would you like to go?</Text>
+    <ScrollView>
+      <View>
+        <ImageBackground
+          source={imageBackground}
+          style={{ width: "100%", height: windowHeight / 2.5 }}
+          imageStyle={{ borderBottomRightRadius: 70 }}
+        >
+          <View style={styles.homeOverlay}>
+            <View style={styles.homeSearch}>
+              <Feather
+                name="menu"
+                size={29}
+                color="white"
+                style={{ position: "absolute", top: 30, left: 20 }}
+              />
+              <Feather
+                name="bell"
+                size={29}
+                color="white"
+                style={{
+                  position: "absolute",
+                  top: 38,
+                  left: windowWidth - 60,
+                }}
+              />
+              <Text style={styles.greet}>Welcome!</Text>
+              <Text style={styles.text}>Where would you like to go?</Text>
+            </View>
+            <View style={styles.searchContent}>
+              <TextInput
+                style={styles.searchInput}
+                placeholder="Search"
+                placeholderTextColor="#fff"
+                value={searchInput}
+                onChangeText={(text) => setSearchInput(text)}
+              ></TextInput>
+              <AntDesign
+                name="search1"
+                size={26}
+                color="white"
+                style={{
+                  position: "absolute",
+                  top: 60,
+                  left: windowWidth - 50,
+                }}
+                onPress={() => {
+                  if (searchInput) {
+                    const res = places.filter(
+                      (item) =>
+                        item.name
+                          .toLowerCase()
+                          .includes(searchInput.toLowerCase()) ||
+                        item.place
+                          .toLowerCase()
+                          .includes(searchInput.toLowerCase())
+                    );
+
+                    navigation.navigate("ViewPlaces", { resSearch: res });
+                    setSearchInput("");
+                  }
+                }}
+              />
+            </View>
           </View>
-          <View style={styles.searchContent}>
-            <TextInput
-              style={styles.searchInput}
-              placeholder="Search"
-              placeholderTextColor="#fff"
-            ></TextInput>
-            <Feather
-              name="search"
-              size={26}
-              color="white"
-              style={{ position: "absolute", top: 60, left: windowWidth - 50 }}
-            />
-          </View>
-        </View>
-      </ImageBackground>
-      <ScrollView>
-        <View style={{ marginTop: 10 }}>
+        </ImageBackground>
+        <View
+          style={{
+            marginTop: 10,
+            flexDirection: "row",
+            justifyContent: "space-between",
+          }}
+        >
           <Text style={{ fontSize: 30, color: "#000", fontWeight: "bold" }}>
             Top
+          </Text>
+          <Text
+            style={{ fontSize: 25, color: "#000", fontWeight: "bold" }}
+            onPress={() => {
+              navigation.navigate("ViewPlaces", { resSearch: places });
+            }}
+          >
+            View All
           </Text>
         </View>
         <View>
@@ -87,8 +119,6 @@ const Home = () => {
               <View style={styles.flatListTopPlaces}>
                 <TouchableOpacity
                   onPress={() => {
-                    console.log(item);
-
                     navigation.navigate("Details", { place: item });
                   }}
                 >
@@ -102,13 +132,44 @@ const Home = () => {
                 </TouchableOpacity>
               </View>
             )}
+            keyExtractor={(item) => item.id}
           />
         </View>
-        <View style={styles.viewPlaces}>
-          <Text style={{ color: "#000", fontSize: 22 }}> View All</Text>
+        <View style={styles.travel}>
+          <Text style={{ fontSize: 30, fontWeight: "bold" }}> Services </Text>
+          <View style={styles.services}>
+            <Text
+              onPress={() => navigation.navigate("Flight")}
+              style={styles.textServices}
+            >
+              <MaterialIcons name="flight" size={26} color="black" />
+              Flight
+            </Text>
+            <Text
+              onPress={() => navigation.navigate("Train")}
+              style={styles.textServices}
+            >
+              <MaterialIcons name="train" size={24} color="black" />
+              Train
+            </Text>
+            <Text
+              onPress={() => navigation.navigate("Boat")}
+              style={styles.textServices}
+            >
+              <MaterialIcons name="directions-boat" size={24} color="black" />
+              Boat
+            </Text>
+            <Text
+              onPress={() => navigation.navigate("Bus")}
+              style={styles.textServices}
+            >
+              <MaterialIcons name="directions-bus" size={24} color="black" />
+              Bus
+            </Text>
+          </View>
         </View>
-      </ScrollView>
-    </View>
+      </View>
+    </ScrollView>
   );
 };
 export default Home;
@@ -167,7 +228,17 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     opacity: 0.3,
   },
-  viewPlaces: {
+  travel: {
     marginTop: 30,
+    paddingBottom:40
+  },
+  services: {
+    flex: 1,
+    justifyContent: "space-around",
+    alignItems: "center",
+  },
+  textServices: {
+    fontSize: 22,
+    marginTop: 20,
   },
 });
