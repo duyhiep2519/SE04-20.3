@@ -1,5 +1,9 @@
 import { AntDesign } from "@expo/vector-icons";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import {
+  DrawerActions,
+  useNavigation,
+  useRoute,
+} from "@react-navigation/native";
 import React from "react";
 import {
   Dimensions,
@@ -10,32 +14,33 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import places from "../data/places";
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 const ViewPlaces = () => {
   const navigation = useNavigation();
   const route = useRoute();
-  const resSearch = route.params.resSearch;
 
   return (
     <View style={styles.container}>
       <AntDesign
-        onPress={() => navigation.goBack()}
+        onPress={() => navigation.navigate("Home")}
         style={styles.backArrow}
         name="arrowleft"
-        size={26}
-        color="#000"
       />
+
       <View style={styles.listPlaces}>
-        {resSearch ? (
+        {route.params ? (
           <FlatList
             keyExtractor={(item) => item.id}
-            data={resSearch}
+            data={route.params.resSearch}
             renderItem={({ item }) => (
               <View style={styles.flatListTopPlaces}>
                 <TouchableOpacity
                   onPress={() => {
-                    navigation.navigate("Details", { place: item });
+                    navigation.dispatch(
+                      DrawerActions.jumpTo("Details", { place: item })
+                    );
                   }}
                 >
                   <View style={{ marginTop: 20 }}>
@@ -50,7 +55,32 @@ const ViewPlaces = () => {
             )}
             keyExtractor={(item) => item.id}
           />
-        ) : null}
+        ) : (
+          <FlatList
+            keyExtractor={(item) => item.id}
+            data={places}
+            renderItem={({ item }) => (
+              <View style={styles.flatListTopPlaces}>
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.dispatch(
+                      DrawerActions.jumpTo("Details", { place: item })
+                    );
+                  }}
+                >
+                  <View style={{ marginTop: 20 }}>
+                    <Text style={{ fontSize: 16, fontWeight: "bold" }}>
+                      {item.place}
+                    </Text>
+                  </View>
+                  <Image source={item.image} style={styles.imageTopPlaces} />
+                  <View style={styles.imageOverlay}></View>
+                </TouchableOpacity>
+              </View>
+            )}
+            keyExtractor={(item) => item.id}
+          />
+        )}
       </View>
     </View>
   );
@@ -87,6 +117,8 @@ const styles = StyleSheet.create({
     position: "absolute",
     left: 5,
     top: 20,
+    color: "#000",
+    fontSize: 30,
   },
   listPlaces: {
     marginTop: 50,

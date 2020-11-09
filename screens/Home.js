@@ -1,5 +1,5 @@
 import { AntDesign, Feather, MaterialIcons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { DrawerActions, useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
 import {
   Dimensions,
@@ -17,6 +17,7 @@ import places from "../data/places";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
+console.log(windowHeight);
 const imageBackground = {
   uri:
     "https://www.freevector.com/uploads/vector/preview/12939/FreeVector-Travel-Background.jpg",
@@ -41,6 +42,9 @@ const Home = () => {
                 size={29}
                 color="white"
                 style={{ position: "absolute", top: 30, left: 20 }}
+                onPress={() => {
+                  navigation.dispatch(DrawerActions.openDrawer());
+                }}
               />
               <Feather
                 name="bell"
@@ -84,7 +88,9 @@ const Home = () => {
                           .includes(searchInput.toLowerCase())
                     );
 
-                    navigation.navigate("ViewPlaces", { resSearch: res });
+                    navigation.dispatch(
+                      DrawerActions.jumpTo("ViewPlaces", { resSearch: res })
+                    );
                     setSearchInput("");
                   }
                 }}
@@ -105,7 +111,9 @@ const Home = () => {
           <Text
             style={{ fontSize: 25, color: "#000", fontWeight: "bold" }}
             onPress={() => {
-              navigation.navigate("ViewPlaces", { resSearch: places });
+              navigation.dispatch(
+                DrawerActions.jumpTo("ViewPlaces", { resSearch: places })
+              );
             }}
           >
             View All
@@ -119,7 +127,9 @@ const Home = () => {
               <View style={styles.flatListTopPlaces}>
                 <TouchableOpacity
                   onPress={() => {
-                    navigation.navigate("Details", { place: item });
+                    navigation.dispatch(
+                      DrawerActions.jumpTo("Details", { place: item })
+                    );
                   }}
                 >
                   <View style={{ marginTop: 20 }}>
@@ -135,32 +145,36 @@ const Home = () => {
             keyExtractor={(item) => item.id}
           />
         </View>
+
         <View style={styles.travel}>
           <Text style={{ fontSize: 30, fontWeight: "bold" }}> Services </Text>
+
           <View style={styles.services}>
             <Text
-              onPress={() => navigation.navigate("Flight")}
+              onPress={() =>
+                navigation.dispatch(DrawerActions.jumpTo("Flight"))
+              }
               style={styles.textServices}
             >
               <MaterialIcons name="flight" size={26} color="black" />
               Flight
             </Text>
             <Text
-              onPress={() => navigation.navigate("Train")}
+              onPress={() => navigation.dispatch(DrawerActions.jumpTo("Train"))}
               style={styles.textServices}
             >
               <MaterialIcons name="train" size={24} color="black" />
               Train
             </Text>
             <Text
-              onPress={() => navigation.navigate("Boat")}
+              onPress={() => navigation.dispatch(DrawerActions.jumpTo("Boat"))}
               style={styles.textServices}
             >
               <MaterialIcons name="directions-boat" size={24} color="black" />
               Boat
             </Text>
             <Text
-              onPress={() => navigation.navigate("Bus")}
+              onPress={() => navigation.dispatch(DrawerActions.jumpTo("Bus"))}
               style={styles.textServices}
             >
               <MaterialIcons name="directions-bus" size={24} color="black" />
@@ -229,8 +243,8 @@ const styles = StyleSheet.create({
     opacity: 0.3,
   },
   travel: {
-    marginTop: 30,
-    paddingBottom:40
+    marginTop: windowHeight / 19,
+    paddingBottom: 40,
   },
   services: {
     flex: 1,
@@ -239,6 +253,6 @@ const styles = StyleSheet.create({
   },
   textServices: {
     fontSize: 22,
-    marginTop: 20,
+    marginTop: windowHeight / 18,
   },
 });

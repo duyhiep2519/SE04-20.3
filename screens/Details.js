@@ -1,15 +1,18 @@
 import { AntDesign, Entypo } from "@expo/vector-icons";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import {
+  DrawerActions,
+  useNavigation,
+  useRoute,
+} from "@react-navigation/native";
 import React from "react";
 import {
   Dimensions,
   ImageBackground,
-
-
-
-  ScrollView, StyleSheet,
+  ScrollView,
+  StyleSheet,
   Text,
-  View
+  View,
+  Button,
 } from "react-native";
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
@@ -18,13 +21,12 @@ const Details = () => {
   const route = useRoute();
   const navigation = useNavigation();
 
-  const place = route.params.place;
   return (
     <ScrollView>
-      {place ? (
+      {route.params ? (
         <View>
           <ImageBackground
-            source={place.image}
+            source={route.params.place.image}
             style={{ width: "100%", height: windowHeight / 2.5 }}
             imageStyle={{ borderBottomRightRadius: 70 }}
           >
@@ -36,22 +38,33 @@ const Details = () => {
                 size={26}
                 color="#fff"
               />
-
               <View>
                 <Text style={styles.placeName}>
                   <Entypo name="location-pin" size={24} color="#fff" />
-                  {place.name}, {place.place}
+                  {route.params.place.name}, {route.params.place.place}
                 </Text>
               </View>
             </View>
           </ImageBackground>
           <View style={styles.introPlace}>
-            <Text style={styles.introText}>{place.intro}</Text>
+            <Text style={styles.introText}>{route.params.place.intro}</Text>
           </View>
         </View>
       ) : (
-        <View>
-          <Text>None</Text>
+        <View style={styles.container}>
+          <View style={styles.textAlert}>
+            <Text style={{ fontSize: 20, color: "red" }}>
+              Please select a location first and come back here!
+            </Text>
+          </View>
+          <View style={styles.buttonGoHome}>
+            <Button
+              onPress={() => {
+                navigation.dispatch(DrawerActions.jumpTo("Home"));
+              }}
+              title="Go back to Home screen"
+            ></Button>
+          </View>
         </View>
       )}
     </ScrollView>
@@ -94,4 +107,13 @@ const styles = StyleSheet.create({
     left: 5,
     top: 20,
   },
+  buttonGoHome: {
+    width: 200,
+    color: "#000",
+    marginTop:100
+  },
+  textAlert:{
+    marginTop:windowHeight/3,
+    paddingHorizontal:20
+  }
 });

@@ -1,36 +1,44 @@
-import { StatusBar } from "expo-status-bar";
-import React from "react";
-import { StyleSheet, Text, View } from "react-native";
-import "react-native-gesture-handler";
+import { createDrawerNavigator } from "@react-navigation/drawer";
 import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
-import Home from "./screens/Home";
-import Details from "./screens/Details";
-import ViewPlaces from "./screens/ViewPlaces";
-import Flight from "./components/Flight";
+import React from "react";
+import "react-native-gesture-handler";
 import Boat from "./components/Boat";
-import Train from "./components/Train";
 import Bus from "./components/Bus";
+import Flight from "./components/Flight";
+import Train from "./components/Train";
+import Details from "./screens/Details";
+import Home from "./screens/Home";
+import ViewPlaces from "./screens/ViewPlaces";
+import { createStackNavigator } from "@react-navigation/stack";
 
-const Stack = createStackNavigator();
+
+const Drawer = createDrawerNavigator();
 
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator
+      <Drawer.Navigator
+        drawerContentOptions={{
+          itemStyle: { marginVertical: 20 },
+        }}
+        overlayColor="transparent"
         initialRoute="Home"
         screenOptions={{
           headerShown: false,
         }}
       >
-        <Stack.Screen name="Home" component={Home} />
-        <Stack.Screen name="Details" component={Details} />
-        <Stack.Screen name="ViewPlaces" component={ViewPlaces} />
-        <Stack.Screen name="Flight" component={Flight} />
-        <Stack.Screen name="Boat" component={Boat} />
-        <Stack.Screen name="Train" component={Train} />
-        <Stack.Screen name="Bus" component={Bus} />
-      </Stack.Navigator>
+        <Drawer.Screen
+          name="Home"
+          component={Home}
+          options={{ title: "Home" }}
+        />
+        <Drawer.Screen name="ViewPlaces" component={ViewPlaces} />
+        <Drawer.Screen name="Details" component={Details} />
+        <Drawer.Screen name="Flight" component={Flight} />
+        <Drawer.Screen name="Boat" component={Boat} />
+        <Drawer.Screen name="Train" component={Train} />
+        <Drawer.Screen name="Bus" component={Bus} />
+      </Drawer.Navigator>
     </NavigationContainer>
   );
 };
