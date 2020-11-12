@@ -13,6 +13,7 @@ import {
   Text,
   View,
   Button,
+  TouchableOpacity,
 } from "react-native";
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
@@ -47,6 +48,16 @@ const Details = () => {
             </View>
           </ImageBackground>
           <View style={styles.introPlace}>
+            <View style={styles.book}>
+              <Text style={styles.about}>
+                <AntDesign name="infocirlce" size={24} color="black" /> About
+              </Text>
+              <TouchableOpacity style={styles.buttonBook}>
+                <Text style={styles.textBook}>
+                  <AntDesign name="plus" size={20} color="black" /> Book now
+                </Text>
+              </TouchableOpacity>
+            </View>
             <Text style={styles.introText}>{route.params.place.intro}</Text>
           </View>
         </View>
@@ -96,11 +107,12 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
   introPlace: {
-    marginTop: 50,
+    marginTop: 20,
     paddingHorizontal: 15,
   },
   introText: {
-    fontSize: 20,
+    fontSize: 22,
+    marginBottom: 5,
   },
   backArrow: {
     position: "absolute",
@@ -110,10 +122,33 @@ const styles = StyleSheet.create({
   buttonGoHome: {
     width: 200,
     color: "#000",
-    marginTop:100
+    marginTop: 100,
   },
-  textAlert:{
-    marginTop:windowHeight/3,
-    paddingHorizontal:20
-  }
+  textAlert: {
+    marginTop: windowHeight / 3,
+    paddingHorizontal: 20,
+  },
+  about: {
+    fontSize: 24,
+    marginBottom: 20,
+    fontWeight: "200",
+    color: "#2c3e50",
+  },
+  book: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  buttonBook: {
+    width: 150,
+    height: 40,
+    backgroundColor: "#ffd32a",
+    borderRadius: 10,
+    alignItems: "center",
+  },
+  textBook: {
+    fontSize: 20,
+    textAlign: "center",
+    marginTop: 5,
+  },
 });

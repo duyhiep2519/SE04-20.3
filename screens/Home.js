@@ -17,19 +17,18 @@ import places from "../data/places";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
-console.log(windowHeight);
+
 const imageBackground = {
   uri:
     "https://www.freevector.com/uploads/vector/preview/12939/FreeVector-Travel-Background.jpg",
 };
-
 const Home = () => {
   const navigation = useNavigation();
   const [searchInput, setSearchInput] = useState();
 
   return (
     <ScrollView>
-      <View>
+      <View style={{ backgroundColor: "#bdc3c7" }}>
         <ImageBackground
           source={imageBackground}
           style={{ width: "100%", height: windowHeight / 2.5 }}
@@ -100,16 +99,28 @@ const Home = () => {
         </ImageBackground>
         <View
           style={{
-            marginTop: 10,
+            marginTop: 30,
             flexDirection: "row",
             justifyContent: "space-between",
           }}
         >
-          <Text style={{ fontSize: 30, color: "#000", fontWeight: "bold" }}>
-            Top
+          <Text
+            style={{
+              fontSize: 25,
+              color: "#000",
+              fontWeight: "bold",
+              marginLeft: 10,
+            }}
+          >
+            Top Places
           </Text>
           <Text
-            style={{ fontSize: 25, color: "#000", fontWeight: "bold" }}
+            style={{
+              fontSize: 24,
+              color: "#000",
+              fontWeight: "bold",
+              marginRight: 10,
+            }}
             onPress={() => {
               navigation.dispatch(
                 DrawerActions.jumpTo("ViewPlaces", { resSearch: places })
@@ -134,6 +145,11 @@ const Home = () => {
                 >
                   <View style={{ marginTop: 20 }}>
                     <Text style={{ fontSize: 16, fontWeight: "bold" }}>
+                      <MaterialIcons
+                        name="location-on"
+                        size={16}
+                        color="black"
+                      />{" "}
                       {item.place}
                     </Text>
                   </View>
@@ -196,11 +212,13 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 18,
     color: "#fff",
+    fontFamily: "notoserif",
   },
   greet: {
     fontSize: 40,
     fontWeight: "bold",
     color: "#fff",
+    fontFamily: "notoserif",
   },
   homeOverlay: {
     position: "absolute",
@@ -254,5 +272,6 @@ const styles = StyleSheet.create({
   textServices: {
     fontSize: 22,
     marginTop: windowHeight / 18,
+    fontFamily: "Roboto",
   },
 });

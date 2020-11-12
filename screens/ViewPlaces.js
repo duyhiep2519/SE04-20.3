@@ -69,7 +69,13 @@ const ViewPlaces = () => {
                   }}
                 >
                   <View style={{ marginTop: 20 }}>
-                    <Text style={{ fontSize: 16, fontWeight: "bold" }}>
+                    <Text
+                      style={{
+                        fontSize: 22,
+                        fontWeight: "bold",
+                        marginBottom: 20,
+                      }}
+                    >
                       {item.place}
                     </Text>
                   </View>
