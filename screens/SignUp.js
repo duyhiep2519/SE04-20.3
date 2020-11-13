@@ -9,7 +9,7 @@ import {
   Dimensions,
   TouchableOpacity,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { DrawerActions, useNavigation } from "@react-navigation/native";
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 const imageBackground = {
@@ -43,7 +43,9 @@ const SignUp = () => {
       style={{ width: "100%", height: windowHeight }}
     >
       <View style={styles.container}>
-        <Text style={styles.title}>Sign Up</Text>
+        <View style={{ marginTop: 50 }}>
+          <Text style={styles.title}>Sign Up</Text>
+        </View>
         <View style={styles.login}>
           <View style={styles.loginContent}>
             <Text style={styles.text}>Email</Text>
@@ -52,7 +54,6 @@ const SignUp = () => {
               placeholder="Email"
               value={email}
               onChangeText={(text) => setEmail(text)}
-              
             />
           </View>
           <View style={styles.loginContent}>
@@ -62,17 +63,15 @@ const SignUp = () => {
               placeholder="Password"
               value={pass}
               onChangeText={(text) => setPass(text)}
-             
             />
           </View>
-          <View>
+          <View style={styles.button}>
             <TouchableOpacity onPress={signUp}>
               <Text style={styles.textLogin}>Sign Up</Text>
             </TouchableOpacity>
             <Text style={styles.textQuestion}>Do you have an account yet?</Text>
             <TouchableOpacity
-              style={styles.buttonSignUp}
-              onPress={() => navigation.navigate("Login")}
+              onPress={() => navigation.dispatch(DrawerActions.jumpTo("Login"))}
             >
               <Text style={styles.textLogin}>Login</Text>
             </TouchableOpacity>
@@ -108,8 +107,9 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
   login: {
-    height: 300,
-    textAlign: "center",
+    flex: 1,
+    justifyContent: "space-around",
+    alignItems: "center",
     marginTop: 100,
   },
   loginContent: {
@@ -127,13 +127,16 @@ const styles = StyleSheet.create({
   },
   buttonSignUp: {
     textAlign: "center",
-
     width: 100,
   },
   textQuestion: {
     fontSize: 18,
-    color: "#ecf0f1",
+    color: "#000",
     marginTop: 20,
     marginBottom: 20,
+  },
+  button: {
+    flex: 4,
+    marginRight: 100,
   },
 });

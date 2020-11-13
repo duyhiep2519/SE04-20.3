@@ -11,6 +11,7 @@ import {
 import firebase from "../firebase";
 import { useSelector, useDispatch } from "react-redux";
 import { signIn } from "../store/actions/actions";
+import { DrawerActions, useNavigation } from "@react-navigation/native";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
@@ -21,7 +22,8 @@ const imageBackground = {
 const Login = () => {
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
-  const isLogin = useSelector((state) => state.login);
+  const navigation = useNavigation();
+
   const dispatch = useDispatch();
   //handle Login
   const handleLogin = async () => {
@@ -44,7 +46,9 @@ const Login = () => {
       style={{ width: "100%", height: windowHeight }}
     >
       <View style={styles.container}>
-        <Text style={styles.title}>Login</Text>
+        <View style={{ marginTop: 50 }}>
+          <Text style={styles.title}>Login</Text>
+        </View>
         <View style={styles.login}>
           <View style={styles.loginContent}>
             <Text style={styles.text}>Email</Text>
@@ -53,7 +57,6 @@ const Login = () => {
               placeholder="Email"
               value={email}
               onChangeText={(text) => setEmail(text)}
-              textContentType="emailAddress"
             />
           </View>
           <View style={styles.loginContent}>
@@ -63,12 +66,20 @@ const Login = () => {
               placeholder="Password"
               value={pass}
               onChangeText={(text) => setPass(text)}
-              textContentType="password"
             />
           </View>
-          <View style={styles.loginContent}>
+          <View style={styles.button}>
             <TouchableOpacity onPress={handleLogin}>
               <Text style={styles.textLogin}>Login</Text>
+            </TouchableOpacity>
+            <Text style={styles.textQuestion}>Do you have an account yet?</Text>
+            <TouchableOpacity
+             
+              onPress={() =>
+                navigation.dispatch(DrawerActions.jumpTo("SignUp"))
+              }
+            >
+              <Text style={styles.textLogin}>Sign Up</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -101,8 +112,9 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
   login: {
-    height: 300,
-    textAlign: "center",
+    flex: 1,
+    justifyContent: "space-around",
+    alignItems: "center",
     marginTop: 100,
   },
   loginContent: {
@@ -111,11 +123,25 @@ const styles = StyleSheet.create({
   },
   textLogin: {
     fontSize: 22,
-    color: "blue",
+    color: "#fff",
     marginLeft: 150,
-    backgroundColor: "#fff",
+    backgroundColor: "#3498db",
     width: 100,
     height: 30,
     textAlign: "center",
+  },
+  buttonSignUp: {
+    textAlign: "center",
+    width: 100,
+  },
+  textQuestion: {
+    fontSize: 18,
+    color: "#000",
+    marginTop: 20,
+    marginBottom: 20,
+  },
+  button: {
+    flex: 4,
+    marginRight: 100,
   },
 });
