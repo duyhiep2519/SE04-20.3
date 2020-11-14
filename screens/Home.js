@@ -14,6 +14,9 @@ import {
   View,
 } from "react-native";
 import places from "../data/places";
+import firebase from "../firebase";
+
+
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;

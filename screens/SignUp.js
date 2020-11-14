@@ -8,19 +8,25 @@ import {
   ImageBackground,
   Dimensions,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import { DrawerActions, useNavigation } from "@react-navigation/native";
+
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
+const test = firebase.database().ref();
+test.on("value", (snap) => console.log("hihi",snap.val()[0]));
+
 const imageBackground = {
   uri:
     "https://www.freevector.com/uploads/vector/preview/12939/FreeVector-Travel-Background.jpg",
 };
+
 const SignUp = () => {
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
   const navigation = useNavigation();
-  console.log(email, pass);
+
   //handle SignUp
   const signUp = async () => {
     try {
@@ -34,6 +40,7 @@ const SignUp = () => {
       });
     } catch (error) {
       console.log(error.message);
+      Alert.alert(error.message);
     }
   };
 
@@ -54,6 +61,7 @@ const SignUp = () => {
               placeholder="Email"
               value={email}
               onChangeText={(text) => setEmail(text)}
+              textContentType="emailAddress"
             />
           </View>
           <View style={styles.loginContent}>
@@ -63,6 +71,7 @@ const SignUp = () => {
               placeholder="Password"
               value={pass}
               onChangeText={(text) => setPass(text)}
+              textContentType="password"
             />
           </View>
           <View style={styles.button}>

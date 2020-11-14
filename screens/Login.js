@@ -6,7 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
   ImageBackground,
-  Dimensions,
+  Dimensions,Alert
 } from "react-native";
 import firebase from "../firebase";
 import { useSelector, useDispatch } from "react-redux";
@@ -37,6 +37,7 @@ const Login = () => {
       });
     } catch (error) {
       console.log(error.message);
+      Alert.alert(error.message)
     }
   };
 
@@ -73,8 +74,7 @@ const Login = () => {
               <Text style={styles.textLogin}>Login</Text>
             </TouchableOpacity>
             <Text style={styles.textQuestion}>Do you have an account yet?</Text>
-            <TouchableOpacity
-             
+            <TouchableOpacity           
               onPress={() =>
                 navigation.dispatch(DrawerActions.jumpTo("SignUp"))
               }
