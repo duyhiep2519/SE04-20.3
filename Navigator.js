@@ -18,7 +18,7 @@ const Drawer = createDrawerNavigator();
 const Navigator = () => {
   const isLogin = useSelector((state) => state.login);
 
-  if (isLogin) {
+  if (!isLogin) {
     return (
       <NavigationContainer>
         <Drawer.Navigator
