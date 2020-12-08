@@ -16,7 +16,8 @@ import SignUp from "./screens/SignUp";
 const Drawer = createDrawerNavigator();
 
 const Navigator = () => {
-  const isLogin = useSelector((state) => state.login);
+  // const isLogin = useSelector((state) => state.login);
+  const isLogin = useSelector((state) => true);
 
   if (isLogin) {
     return (
@@ -56,8 +57,9 @@ const Navigator = () => {
             headerShown: false,
           }}
         >
-          <Drawer.Screen name="SignUp" component={SignUp} />
           <Drawer.Screen name="Login" component={Login} />
+          <Drawer.Screen name="SignUp" component={SignUp} />
+          
         </Drawer.Navigator>
       </NavigationContainer>
     );

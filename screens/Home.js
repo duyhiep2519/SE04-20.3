@@ -16,8 +16,6 @@ import {
 import places from "../data/places";
 import firebase from "../firebase";
 
-
-
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
@@ -215,13 +213,13 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 18,
     color: "#fff",
-    fontFamily: "notoserif",
+    // fontFamily: "notoserif",
   },
   greet: {
     fontSize: 40,
     fontWeight: "bold",
     color: "#fff",
-    fontFamily: "notoserif",
+    // fontFamily: "notoserif",
   },
   homeOverlay: {
     position: "absolute",
