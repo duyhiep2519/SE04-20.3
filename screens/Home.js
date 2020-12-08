@@ -1,6 +1,6 @@
 import { AntDesign, Feather, MaterialIcons } from "@expo/vector-icons";
 import { DrawerActions, useNavigation } from "@react-navigation/native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Dimensions,
   FlatList,
@@ -13,7 +13,6 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import places from "../data/places";
 import firebase from "../firebase";
 
 const windowWidth = Dimensions.get("window").width;
@@ -23,9 +22,26 @@ const imageBackground = {
   uri:
     "https://www.freevector.com/uploads/vector/preview/12939/FreeVector-Travel-Background.jpg",
 };
+
 const Home = () => {
   const navigation = useNavigation();
   const [searchInput, setSearchInput] = useState();
+  const [places, setPlaces] = useState([]);
+
+  useEffect(() => {
+    const featchData = async () => {
+      await firebase
+        .database()
+        .ref()
+        .child("places")
+        .on("value", (snapshot) => {
+          setPlaces(snapshot.val());
+        });
+    };
+    featchData();
+  }, []);
+
+  console.log("palces", typeof places);
 
   return (
     <ScrollView>

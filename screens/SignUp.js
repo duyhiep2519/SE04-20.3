@@ -14,8 +14,6 @@ import { DrawerActions, useNavigation } from "@react-navigation/native";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
-const test = firebase.database().ref();
-test.on("value", (snap) => console.log("hihi",snap.val()[0]));
 
 const imageBackground = {
   uri:
