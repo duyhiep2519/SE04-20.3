@@ -130,11 +130,9 @@ const Flight = () => {
                         style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
                         value={({item})}
                         onPress={({item})=>console.log(item)}
-
                         >
                         <Text style={styles.textStyle}>BOOK</Text>
                       </TouchableHighlight>
-                      {/* <Button title='BOOK' value={item} onPress={()=>test('a')}/> */}
                       </Text>
                     </View>
                   }

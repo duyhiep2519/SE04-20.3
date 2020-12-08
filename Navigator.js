@@ -16,9 +16,7 @@ import SignUp from "./screens/SignUp";
 const Drawer = createDrawerNavigator();
 
 const Navigator = () => {
-  // const isLogin = useSelector((state) => state.login);
-  const isLogin = useSelector((state) => true);
-
+  const isLogin = useSelector((state) => state.login);
   if (!isLogin) {
     return (
       <NavigationContainer>
