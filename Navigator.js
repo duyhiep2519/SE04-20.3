@@ -18,7 +18,6 @@ const Stack = createStackNavigator();
 
 const Navigator = () => {
   const isLogin = useSelector((state) => state.login);
-
   if (!isLogin) {
     return (
       <NavigationContainer>
@@ -54,8 +53,9 @@ const Navigator = () => {
             headerShown: false,
           }}
         >
-          <Drawer.Screen name="SignUp" component={SignUp} />
           <Drawer.Screen name="Login" component={Login} />
+          <Drawer.Screen name="SignUp" component={SignUp} />
+          
         </Drawer.Navigator>
       </NavigationContainer>
     );

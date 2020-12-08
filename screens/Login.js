@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import firebase from "../firebase";
 import { useSelector, useDispatch } from "react-redux";
-import { signIn } from "../store/actions/actions";
+// import { signIn } from "../store/actions/actions";
 import { DrawerActions, useNavigation } from "@react-navigation/native";
 
 const windowWidth = Dimensions.get("window").width;

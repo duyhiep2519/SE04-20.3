@@ -229,13 +229,13 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 18,
     color: "#fff",
-    fontFamily: "notoserif",
+    // fontFamily: "notoserif",
   },
   greet: {
     fontSize: 40,
     fontWeight: "bold",
     color: "#fff",
-    fontFamily: "notoserif",
+    // fontFamily: "notoserif",
   },
   homeOverlay: {
     position: "absolute",
