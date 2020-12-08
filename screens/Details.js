@@ -52,7 +52,10 @@ const Details = () => {
               <Text style={styles.about}>
                 <AntDesign name="infocirlce" size={24} color="black" /> About
               </Text>
-              <TouchableOpacity style={styles.buttonBook}>
+              <TouchableOpacity
+                style={styles.buttonBook}
+                onPress={() => navigation.dispatch(DrawerActions.jumpTo("Book"))}
+              >
                 <Text style={styles.textBook}>
                   <AntDesign name="plus" size={20} color="black" /> Book now
                 </Text>
