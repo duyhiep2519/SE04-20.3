@@ -41,8 +41,6 @@ const Home = () => {
     featchData();
   }, []);
 
-  console.log("palces", typeof places);
-
   return (
     <ScrollView>
       <View style={{ backgroundColor: "#bdc3c7" }}>

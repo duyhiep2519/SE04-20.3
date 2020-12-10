@@ -1,6 +1,6 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React from "react";
-import { StyleSheet, View } from "react-native";
+
 import Boat from "../components/Boat";
 import Flight from "../components/Flight";
 import Train from "../components/Train";

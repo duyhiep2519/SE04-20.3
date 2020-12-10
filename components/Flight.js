@@ -1,285 +1,377 @@
-import React, { useState, useEffect } from "react";
-import { AntDesign, Feather, MaterialIcons } from "@expo/vector-icons";
-import { Dimensions, View, Text, StyleSheet, ScrollView, Modal, Picker, TouchableHighlight, ImageBackground, Button } from "react-native";
-import { FlatList, TextInput } from "react-native-gesture-handler";
-import provinces from "../data/flight"
+import React, { useState } from "react";
+import { AntDesign } from "@expo/vector-icons";
+import {
+  Alert,
+  Dimensions,
+  FlatList,
+  ImageBackground,
+  Modal,
+  Picker,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import provinces from "../data/flight";
 import flight_Schedules from "../data/flight Schedules";
-import firebase from "firebase";
+import BackgroundCurve from "../helper/BackgroundCurve";
+const windowWidth = Dimensions.get("window").width;
+const windowHeight = Dimensions.get("window").height;
 
 const imageBackground = {
   uri:
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKTKzZLtV2Ji5_NmjtxRKPzUCJWyAHid3VdA&usqp=CAU",
+    "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.kissclipart.com%2Fgolden-ticket-png-clipart-event-tickets-clip-art-0muq7k%2Fdownload-clipart.html&psig=AOvVaw2MHd2Kvja3E2BZtEsA_ziH&ust=1607675360085000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCNj1iM3_wu0CFQAAAAAdAAAAABAD",
 };
 const Flight = () => {
-  const [selectedValue1, setSelectedValue1] = useState('');
-  const [selectedValue2, setSelectedValue2] = useState('');
+  const [selectedValue1, setSelectedValue1] = useState("");
+  const [selectedValue2, setSelectedValue2] = useState("");
+  const [data, setData] = useState();
   const [modalVisible, setModalVisible] = useState(false);
-  const [flag, setFlag] = useState(false);
-  const [dataFlight,setDataFlight] = useState({id:'0',time:'0',date:'0'})
-  // console.log(dataFlight)
-  const data = flight_Schedules.filter(
-    item => 
-    item.from === selectedValue1 && 
-    item.to === selectedValue2
-    )
 
-  const test=(item)=>{
-    setModalVisible(!modalVisible)
-    setDataFlight({id:item.id_flight,time:item.time,date:item.date})
-    console.log(item.id)
-
-  }
   return (
     <ScrollView>
-      <View style={styles.contener}>
-        <View style={styles.header}>
-          <Text style={{
-            paddingTop: 15,
-            fontSize: 35,
-            fontWeight: "bold",
-            color: "#0b0beb",
-          }}>
-            Find flight
-          </Text>
-        </View>
-        <View styles={{ borderWidth: 4 }} >
-          <View style={{ marginTop: 20 }}>
-            <Text style={styles.text}>From : </Text>
-            <Picker
-              styles={{
-                fontWeight: 7,
-                weight: 19,
-                height: 1
-              }}
-              selectedValue={selectedValue1}
-              onValueChange={(itemValue) => setSelectedValue1(itemValue)}>
-              <Picker.Item label='' value='' />
-              {provinces.map((item) =>
-                <Picker.Item
-                  label={item.place}
-                  value={item.name}
-                  key={item.id}
-                />
-              )}
-            </Picker>
-          </View>
-          <View style={{ marginTop: 20 }}>
-            <Text style={styles.text}>  To    : </Text>
-            <Picker
-              selectedValue={selectedValue2}
-              onValueChange={(itemValue) => setSelectedValue2(itemValue)}>
-              <Picker.Item label='' value='' />
-              {provinces.map((item) =>
-                <Picker.Item
-                  label={item.place}
-                  value={item.name}
-                  key={item.id}
-                />
-              )}
-            </Picker>
-          </View>
-          <TouchableHighlight
-            style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
-            onPress={() => {
-              setFlag(true)
+      <View style={styles.container}>
+        <BackgroundCurve style={styles.svg} />
+        <View style={styles.title}>
+          <Text
+            style={{
+              paddingTop: 15,
+              fontSize: 35,
+              fontWeight: "bold",
+              color: "#fff",
             }}
           >
-            <Text
-              style={styles.textStyle}
-            >
-              find
-            </Text>
-          </TouchableHighlight>
+            <AntDesign name="find" color="#fff" size={28} /> Find flight
+          </Text>
+        </View>
+        <View style={styles.Picker}>
           <View
             style={{
-              alignItems: 'center',
-              flexDirection: 'row',
-              justifyContent: 'center'
-            }}>
-            <Text style={styles.textHeader}>
-              {selectedValue1}
-            </Text>
-            <Text style={styles.textHeader}>
-              --
-            </Text>
-            <Text style={styles.textHeader}>
-              {selectedValue2}
-            </Text>
-          </View>
-        </View>
-        <View>
-          {flag == true ?
-            <View>
-              <View style={styles.viewList}>
-                <Text style={styles.headList}>Flight</Text>
-                <Text style={styles.headList}>Time</Text>
-                <Text style={styles.headList}>Date</Text>
-                <Text style={styles.headList}>BOOK</Text>
-              </View>
-              <ScrollView>
-                <FlatList
-                  data={data}
-                  keyExtractor={(item) =>item.id_flight}
-                  renderItem={({ item }) =>
-                    <View style={styles.viewList}>
-                      <Text style={styles.textList}>{item.id_flight}</Text>
-                      <Text style={styles.textList}>{item.time}</Text>
-                      <Text style={styles.textList}>{item.date}</Text>
-                      <Text style={styles.textList}>
-                      <TouchableHighlight
-                        style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
-                        value={({item})}
-                        onPress={({item})=>console.log(item)}
-                        >
-                        <Text style={styles.textStyle}>BOOK</Text>
-                      </TouchableHighlight>
-                      </Text>
-                    </View>
-                  }
-                />
-              </ScrollView>
-            </View>
-            : <View>
-              <Text />
-            </View>
-          }
-        </View>
-      </View>
-      <View>
-        <Modal
-          transparent={true}
-          visible={modalVisible}
-        >
-          <View>
-            <ImageBackground
-              source={imageBackground}
-              style={{ width: '100%', height: "100%" }}
-              imageStyle={{ backgroundColor: 'white' }}
-            >
-              <View>
-                <AntDesign
-                  name="left"
-                  size={30}
-                  color="black"
-                  style={{ position: "absolute", top: 30, left: 20 }}
-                  onPress={() => {
-                    setModalVisible(false);
-                  }}
-                />
-              </View>
-              <View
+              borderRadius: 15,
+              backgroundColor: "#ecf0f1",
+              borderWidth: 1,
+            }}
+          >
+            <View style={styles.PickerForm}>
+              <Text
                 style={{
-                  paddingTop: 50,
-                  alignItems: 'center',
-                  flexDirection: 'row',
-                  justifyContent: 'center'
-                }}>
-                <Text style={styles.textHeader}>
-                  {selectedValue1}
-                </Text>
-                <Text style={styles.textHeader}>
-                  --
+                  fontSize: 24,
+                  color: "#34495e",
+                  fontWeight: "bold",
+                }}
+              >
+                From <AntDesign name="enviroment" size={24} color="black" />
               </Text>
-                <Text style={styles.textHeader}>
-                  {selectedValue2}
-                </Text>
-              </View>
-              <View>
-                <Text>NAME OF PASSENGER</Text>
-                <Text>BUI THAI HIEU</Text>
-              </View>
-              <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
-                <View>
-                  <Text>FLIGHT</Text>
-                  <Text>{dataFlight.id}</Text>
-                  <Text></Text>
-                </View>
-                <View>
-                  <Text>TIME</Text>
-                  <Text>{dataFlight.time}</Text>
-                </View>
+              <Picker
+                style={{ width: 300 }}
+                selectedValue={selectedValue1}
+                onValueChange={(itemValue) => setSelectedValue1(itemValue)}
+              >
+                <Picker.Item label="From..." value=""></Picker.Item>
+                {provinces.map((item) => (
+                  <Picker.Item
+                    label={item.place}
+                    value={item.name}
+                    key={item.id}
+                  />
+                ))}
+              </Picker>
+            </View>
+            <View style={styles.PickerForm}>
+              <Text
+                style={{
+                  fontSize: 24,
+                  color: "#34495e",
+                  fontWeight: "bold",
+                }}
+              >
+                To <AntDesign name="enviroment" size={24} color="black" />
+              </Text>
+              <Picker
+                style={{ width: 300 }}
+                selectedValue={selectedValue2}
+                onValueChange={(itemValue, itemIndex) =>
+                  setSelectedValue2(itemValue)
+                }
+              >
+                <Picker.Item label="To..." value=""></Picker.Item>
+                {provinces.map((item) => (
+                  <Picker.Item
+                    label={item.place}
+                    value={item.name}
+                    key={item.id}
+                  />
+                ))}
+              </Picker>
+            </View>
 
-              </View>
-              <View>
-                <Text>DATE</Text>
-                <Text>{dataFlight.date}</Text>
-              </View>
-              <View>
-                <Text>GATE</Text>
-                <Text>A11</Text>
-              </View>
-            </ImageBackground>
+            <View style={styles.PickerResult}>
+              <Text style={styles.PickerResultItem}>{selectedValue1}</Text>
+              {selectedValue2 ? (
+                <Text style={styles.PickerResultItem}>
+                  <AntDesign name="swap" size={20} />
+                </Text>
+              ) : null}
+              <Text style={styles.PickerResultItem}>{selectedValue2}</Text>
+            </View>
+            <TouchableOpacity
+              style={styles.Find}
+              onPress={() =>
+                setData(
+                  flight_Schedules.filter(
+                    (item) =>
+                      item.from === selectedValue1 && item.to === selectedValue2
+                  )
+                )
+              }
+            >
+              <Text style={{ color: "#fff", fontSize: 22, fontWeight: "bold" }}>
+                Find
+              </Text>
+            </TouchableOpacity>
           </View>
-        </Modal>
+        </View>
+        {data && (
+          <View style={styles.ListFlight}>
+            <Text
+              style={{
+                fontSize: 30,
+                color: "#000",
+                marginLeft: windowWidth / 18,
+                marginTop: 20,
+                fontWeight: "bold",
+              }}
+            >
+              Result <AntDesign name="tagso" size={30} />
+            </Text>
+            <FlatList
+              data={data}
+              contentContainerStyle={{ paddingHorizontal: 20 }}
+              renderItem={({ item }) => (
+                <View style={styles.ListFlightItem}>
+                  <TouchableOpacity
+                    onPress={() => setModalVisible(!modalVisible)}
+                  >
+                    <Text
+                      style={{
+                        fontSize: 24,
+                        color: "#000",
+                        marginLeft: windowWidth / 5,
+                      }}
+                    >
+                      Flight infomation{" "}
+                      <AntDesign name="checkcircleo" size={24} />
+                    </Text>
+                    <Text
+                      style={{
+                        color: "#000",
+                        fontSize: 22,
+                        fontWeight: "bold",
+                      }}
+                    >
+                      <AntDesign name="barcode" size={22} color="black" />{" "}
+                      Flight code : {item.id_flight}
+                    </Text>
+                    <Text style={{ fontSize: 14, color: "#000" }}>
+                      {item.from} <AntDesign name="arrowright" /> {item.to}
+                    </Text>
+
+                    <Text style={{ fontSize: 22, color: "#000" }}>
+                      <AntDesign name="calendar" size={22} /> {item.date}
+                      {"   "}
+                      {item.time}
+                    </Text>
+                  </TouchableOpacity>
+
+                  <View style={styles.centeredView}>
+                    <Modal
+                      animationType="none"
+                      transparent={true}
+                      visible={modalVisible}
+                      onRequestClose={() => {
+                        Alert.alert("Modal has been closed.");
+                        setModalVisible(!modalVisible);
+                      }}
+                    >
+                      <View style={styles.centeredView}>
+                        <View style={styles.modalView}>
+                          <ImageBackground
+                            source={require("../assets/ticket.png")}
+                            style={{ width: 390, height: 200 }}
+                          >
+                            <View
+                              style={{
+                                marginTop: 18,
+
+                                paddingHorizontal: 40,
+                              }}
+                            >
+                              <Text style={styles.modalText}>
+                                <AntDesign name="infocirlceo" /> Name : Tran Duy
+                                Hiep
+                              </Text>
+                              <Text
+                                style={{
+                                  color: "#000",
+                                  fontSize: 22,
+                                  fontWeight: "bold",
+                                }}
+                              >
+                                <AntDesign
+                                  name="barcode"
+                                  size={22}
+                                  color="black"
+                                />{" "}
+                                Flight code : {item.id_flight}
+                              </Text>
+                              <Text style={{ fontSize: 12, color: "#000" }}>
+                                {item.from} <AntDesign name="arrowright" />{" "}
+                                {item.to}
+                              </Text>
+
+                              <Text style={{ fontSize: 22, color: "#000" }}>
+                                <AntDesign name="calendar" size={22} />{" "}
+                                {item.date}
+                                {"   "}
+                                {item.time}
+                              </Text>
+                            </View>
+                          </ImageBackground>
+                          <TouchableOpacity
+                            style={{
+                              ...styles.openButton,
+                              backgroundColor: "#2196F3",
+                            }}
+                            onPress={() => {
+                              setModalVisible(!modalVisible);
+                            }}
+                          >
+                            <Text style={styles.textStyle}>
+                              Book <AntDesign name="book" />
+                            </Text>
+                          </TouchableOpacity>
+                        </View>
+                      </View>
+                    </Modal>
+                  </View>
+                </View>
+              )}
+              keyExtractor={(item) => item.id_flight}
+            />
+          </View>
+        )}
       </View>
     </ScrollView>
-
-
   );
 };
 export default Flight;
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 10,
+    flex: 1,
+    justifyContent: "space-around",
+    borderRadius: 10,
   },
-  header: {
-    paddingTop: 10,
-    justifyContent: "center",
+  ListFlight: {
+    flex: 1,
+    justifyContent: "space-around",
+  },
+  ListFlightItem: {
+    flex: 1,
+    alignItems: "stretch",
+    justifyContent: "space-around",
+    padding: 16,
+    marginTop: 20,
+    backgroundColor: "#fff",
+    borderRadius: 15,
+    borderWidth: 1,
+  },
+  Find: {
+    flex: 1,
+    width: 150,
+    height: 40,
+    backgroundColor: "#FB7200",
+    borderRadius: 20,
     alignItems: "center",
-    borderBottomWidth: 1.5,
-    borderBottomColor: '#fdbb2d',
-    paddingBottom: 10
+    justifyContent: "center",
+    marginLeft: windowWidth / 3.5,
+    marginTop: 20,
+    marginBottom: 20,
   },
-  textHeader: {
-    paddingTop: 10,
-    paddingBottom: 10,
-    fontSize: 10,
-    paddingLeft: 10,
-    fontWeight: "bold",
-    color: "red",
+  title: {
+    alignItems: "center",
+    marginTop: 40,
+  },
+  Picker: {
+    flex: 1,
+    paddingHorizontal: 20,
+    marginTop: 150,
+  },
+  PickerForm: {
+    flex: 1,
+    alignItems: "center",
+  },
+  PickerResult: {
+    flex: 1,
+    justifyContent: "space-around",
+    padding: 20,
+    alignItems: "center",
+    backgroundColor: "#ecf0f1",
+    marginTop: 20,
+    borderRadius: 15,
+  },
+  PickerResultItem: {
+    fontSize: 18,
+    color: "#000",
   },
   text: {
-    fontSize: 30,
-    color: '#50504e',
-    paddingRight: 10,
-    paddingLeft: 25
-
+    fontSize: 20,
+    color: "#000",
+    marginLeft: windowWidth / 10,
   },
-  input: {
-    paddingLeft: 10,
-    borderWidth: 1,
-    flex: 0.8,
-    fontSize: 15,
-    borderRadius: 4,
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "#95a5a6",
+    borderRadius: 20,
+    paddingTop: 30,
+    paddingHorizontal: 5,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   openButton: {
     backgroundColor: "#F194FF",
     borderRadius: 10,
+    padding: 15,
+    width: 150,
+    marginBottom: 5,
+
+    elevation: 2,
   },
   textStyle: {
     color: "white",
     fontWeight: "bold",
-    textAlign: "center"
+    textAlign: "center",
   },
-  headList: {
-    borderBottomWidth: 1,
-    fontSize: 25,
-    paddingHorizontal: 12,
-    color: '#959D93'
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center",
   },
-  viewList: {
-    marginTop: 20,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    borderBottomWidth: 0.5,
-    alignContent: 'center',
-
+  svg: {
+    position: "absolute",
+    width: Dimensions.get("window").width,
+    top: 0,
   },
-  textList: {
-    fontSize: 20,
-    paddingHorizontal: 5,
-    width: 70,
-    alignContent: 'center',
-    justifyContent: "center"
-  },
-})
+});

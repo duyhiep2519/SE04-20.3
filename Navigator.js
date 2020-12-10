@@ -11,10 +11,7 @@ import Login from "./screens/Login";
 import SignUp from "./screens/SignUp";
 import ViewPlaces from "./screens/ViewPlaces";
 
-
 const Drawer = createDrawerNavigator();
-const Stack = createStackNavigator();
-
 
 const Navigator = () => {
   const isLogin = useSelector((state) => state.login);
@@ -55,7 +52,6 @@ const Navigator = () => {
         >
           <Drawer.Screen name="Login" component={Login} />
           <Drawer.Screen name="SignUp" component={SignUp} />
-          
         </Drawer.Navigator>
       </NavigationContainer>
     );
