@@ -1,10 +1,10 @@
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "react-native-gesture-handler";
 import { useSelector } from "react-redux";
-import Book from "./screens/Book";
+import Flight from "./components/Flight";
+import LoadingScreen from "./components/LoadingScreen";
 import Details from "./screens/Details";
 import Home from "./screens/Home";
 import Login from "./screens/Login";
@@ -15,7 +15,8 @@ const Drawer = createDrawerNavigator();
 
 const Navigator = () => {
   const isLogin = useSelector((state) => state.login);
-  if (!isLogin) {
+
+  if (isLogin) {
     return (
       <NavigationContainer>
         <Drawer.Navigator
@@ -35,7 +36,7 @@ const Navigator = () => {
           />
           <Drawer.Screen name="ViewPlaces" component={ViewPlaces} />
           <Drawer.Screen name="Details" component={Details} />
-          <Drawer.Screen name="Book" component={Book} />
+          <Drawer.Screen name="Flight" component={Flight} />
         </Drawer.Navigator>
       </NavigationContainer>
     );

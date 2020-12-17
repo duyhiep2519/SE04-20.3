@@ -9,6 +9,7 @@ import {
   Dimensions,
   FlatList,
   Image,
+  StatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -23,11 +24,19 @@ const ViewPlaces = () => {
 
   return (
     <View style={styles.container}>
-      <AntDesign
+      <StatusBar hidden />
+      <TouchableOpacity
+        style={styles.arrowBack}
         onPress={() => navigation.navigate("Home")}
-        style={styles.backArrow}
-        name="arrowleft"
-      />
+      >
+        <Text style={{ color: "#e84118", fontSize: 18 }}>
+          <AntDesign
+            style={{ color: "#e84118", fontSize: 18 }}
+            name="arrowleft"
+          />
+          Back to Home
+        </Text>
+      </TouchableOpacity>
 
       <View style={styles.listPlaces}>
         {route.params ? (
@@ -100,18 +109,19 @@ const styles = StyleSheet.create({
   },
   imageTopPlaces: {
     width: windowWidth - 20,
-    height: windowHeight / 3,
+    height: windowHeight / 2.8,
     borderRadius: 15,
+    paddingHorizontal: 10,
   },
   flatListTopPlaces: {
     paddingHorizontal: 15,
   },
   imageOverlay: {
     position: "absolute",
-    top: 42,
+    top: windowHeight / 17.5,
     backgroundColor: "#000",
     width: windowWidth - 20,
-    height: windowHeight / 3,
+    height: windowHeight / 2.8,
     borderRadius: 15,
     opacity: 0.3,
   },
@@ -119,14 +129,14 @@ const styles = StyleSheet.create({
   viewPlaces: {
     marginTop: 30,
   },
-  backArrow: {
-    position: "absolute",
-    left: 5,
-    top: 20,
-    color: "#000",
-    fontSize: 30,
-  },
+
   listPlaces: {
     marginTop: 50,
+  },
+  arrowBack: {
+    position: "absolute",
+    top: 20,
+    left: 10,
+    height: 40,
   },
 });

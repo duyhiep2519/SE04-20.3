@@ -54,7 +54,9 @@ const Details = () => {
               </Text>
               <TouchableOpacity
                 style={styles.buttonBook}
-                onPress={() => navigation.dispatch(DrawerActions.jumpTo("Book"))}
+                onPress={() =>
+                  navigation.dispatch(DrawerActions.jumpTo("Flight"))
+                }
               >
                 <Text style={styles.textBook}>
                   <AntDesign name="plus" size={20} color="black" /> Book now
@@ -100,7 +102,6 @@ const styles = StyleSheet.create({
     height: windowHeight / 2.5,
     backgroundColor: "#000",
     opacity: 0.6,
-    borderBottomRightRadius: 70,
   },
   placeName: {
     position: "absolute",

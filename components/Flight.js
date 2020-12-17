@@ -1,36 +1,63 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { AntDesign } from "@expo/vector-icons";
+import { Picker } from "@react-native-picker/picker";
 import {
   Alert,
   Dimensions,
   FlatList,
-  ImageBackground,
   Modal,
-  Picker,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
+  StatusBar,
 } from "react-native";
-import provinces from "../data/flight";
-import flight_Schedules from "../data/flight Schedules";
+import { useSelector } from "react-redux";
+
+import firebase from "../firebase";
+
 import BackgroundCurve from "../helper/BackgroundCurve";
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
-const imageBackground = {
-  uri:
-    "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.kissclipart.com%2Fgolden-ticket-png-clipart-event-tickets-clip-art-0muq7k%2Fdownload-clipart.html&psig=AOvVaw2MHd2Kvja3E2BZtEsA_ziH&ust=1607675360085000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCNj1iM3_wu0CFQAAAAAdAAAAABAD",
-};
 const Flight = () => {
+  const isLogin = useSelector((state) => state.login);
+  const [provinces, setProvinces] = useState([]);
+  const [flightSchedules, setFlightSchedules] = useState([]);
   const [selectedValue1, setSelectedValue1] = useState("");
   const [selectedValue2, setSelectedValue2] = useState("");
   const [data, setData] = useState();
   const [modalVisible, setModalVisible] = useState(false);
 
+  useEffect(() => {
+    const featchData = async () => {
+      await firebase
+        .database()
+        .ref()
+        .child("flights/provinces")
+        .on("value", (snapshot) => {
+          setProvinces(snapshot.val());
+        });
+    };
+    featchData();
+  }, []);
+  useEffect(() => {
+    const featchData = async () => {
+      await firebase
+        .database()
+        .ref()
+        .child("flight_Schedules/flight_Schedules")
+        .on("value", (snapshot) => {
+          setFlightSchedules(snapshot.val());
+        });
+    };
+    featchData();
+  }, []);
+
   return (
     <ScrollView>
+      <StatusBar hidden />
       <View style={styles.container}>
         <BackgroundCurve style={styles.svg} />
         <View style={styles.title}>
@@ -42,7 +69,8 @@ const Flight = () => {
               color: "#fff",
             }}
           >
-            <AntDesign name="find" color="#fff" size={28} /> Find flight
+            <AntDesign name="find" color="#fff" size={28} /> Find flight{" "}
+            <AntDesign name="find" color="#fff" size={28} />
           </Text>
         </View>
         <View style={styles.Picker}>
@@ -51,6 +79,15 @@ const Flight = () => {
               borderRadius: 15,
               backgroundColor: "#ecf0f1",
               borderWidth: 1,
+              shadowColor: "#000",
+              shadowOffset: {
+                width: 0,
+                height: 9,
+              },
+              shadowOpacity: 0.5,
+              shadowRadius: 12.35,
+
+              elevation: 19,
             }}
           >
             <View style={styles.PickerForm}>
@@ -64,7 +101,7 @@ const Flight = () => {
                 From <AntDesign name="enviroment" size={24} color="black" />
               </Text>
               <Picker
-                style={{ width: 300 }}
+                style={{ height: 50, width: 300 }}
                 selectedValue={selectedValue1}
                 onValueChange={(itemValue) => setSelectedValue1(itemValue)}
               >
@@ -89,7 +126,7 @@ const Flight = () => {
                 To <AntDesign name="enviroment" size={24} color="black" />
               </Text>
               <Picker
-                style={{ width: 300 }}
+                style={{ width: 300, height: 50 }}
                 selectedValue={selectedValue2}
                 onValueChange={(itemValue, itemIndex) =>
                   setSelectedValue2(itemValue)
@@ -119,7 +156,7 @@ const Flight = () => {
               style={styles.Find}
               onPress={() =>
                 setData(
-                  flight_Schedules.filter(
+                  flightSchedules.filter(
                     (item) =>
                       item.from === selectedValue1 && item.to === selectedValue2
                   )
@@ -157,7 +194,7 @@ const Flight = () => {
                       style={{
                         fontSize: 24,
                         color: "#000",
-                        marginLeft: windowWidth / 5,
+                        marginLeft: windowWidth / 7,
                       }}
                     >
                       Flight infomation{" "}
@@ -196,48 +233,50 @@ const Flight = () => {
                     >
                       <View style={styles.centeredView}>
                         <View style={styles.modalView}>
-                          <ImageBackground
-                            source={require("../assets/ticket.png")}
-                            style={{ width: 390, height: 200 }}
+                          <View
+                            style={{
+                              paddingHorizontal: 15,
+                            }}
                           >
-                            <View
+                            <Text
                               style={{
-                                marginTop: 18,
-
-                                paddingHorizontal: 40,
+                                color: "#000",
+                                fontSize: 25,
+                                fontWeight: "bold",
+                                marginLeft: 20,
                               }}
                             >
-                              <Text style={styles.modalText}>
-                                <AntDesign name="infocirlceo" /> Name : Tran Duy
-                                Hiep
-                              </Text>
-                              <Text
-                                style={{
-                                  color: "#000",
-                                  fontSize: 22,
-                                  fontWeight: "bold",
-                                }}
-                              >
-                                <AntDesign
-                                  name="barcode"
-                                  size={22}
-                                  color="black"
-                                />{" "}
-                                Flight code : {item.id_flight}
-                              </Text>
-                              <Text style={{ fontSize: 12, color: "#000" }}>
-                                {item.from} <AntDesign name="arrowright" />{" "}
-                                {item.to}
-                              </Text>
+                              <AntDesign name="infocirlceo" size={23} /> Name :
+                              {isLogin.username}
+                            </Text>
+                            <Text
+                              style={{
+                                color: "#000",
+                                fontSize: 22,
+                                fontWeight: "bold",
+                                textDecorationLine: "underline",
+                              }}
+                            >
+                              <AntDesign
+                                name="barcode"
+                                size={22}
+                                color="black"
+                              />{" "}
+                              Flight code : {item.id_flight} {"  "} GATE : 2
+                            </Text>
+                            <Text style={{ fontSize: 14, color: "#000" }}>
+                              {item.from} <AntDesign name="arrowright" />{" "}
+                              {item.to}
+                            </Text>
 
-                              <Text style={{ fontSize: 22, color: "#000" }}>
-                                <AntDesign name="calendar" size={22} />{" "}
-                                {item.date}
-                                {"   "}
-                                {item.time}
-                              </Text>
-                            </View>
-                          </ImageBackground>
+                            <Text style={{ fontSize: 22, color: "#000" }}>
+                              <AntDesign name="calendar" size={22} />{" "}
+                              {item.date}
+                              {"   "}
+                              {item.time}
+                            </Text>
+                          </View>
+
                           <TouchableOpacity
                             style={{
                               ...styles.openButton,
@@ -285,6 +324,15 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     borderRadius: 15,
     borderWidth: 1,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 9,
+    },
+    shadowOpacity: 0.5,
+    shadowRadius: 12.35,
+
+    elevation: 19,
   },
   Find: {
     flex: 1,
@@ -337,7 +385,7 @@ const styles = StyleSheet.create({
   },
   modalView: {
     margin: 20,
-    backgroundColor: "#95a5a6",
+    backgroundColor: "#fff",
     borderRadius: 20,
     paddingTop: 30,
     paddingHorizontal: 5,

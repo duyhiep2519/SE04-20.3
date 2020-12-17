@@ -23,6 +23,7 @@ const imageBackground = {
 const SignUp = () => {
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
+  const [name, setName] = useState("");
   const navigation = useNavigation();
 
   //handle SignUp
@@ -31,6 +32,9 @@ const SignUp = () => {
       await firebase.auth().createUserWithEmailAndPassword(email, pass);
       firebase.auth().onAuthStateChanged((user) => {
         if (user) {
+          user.updateProfile({
+            displayName: name,
+          });
           navigation.navigate("Login");
         } else {
           console.log("Loi");
@@ -52,6 +56,16 @@ const SignUp = () => {
           <Text style={styles.title}>Sign Up</Text>
         </View>
         <View style={styles.login}>
+          <View style={styles.loginContent}>
+            <Text style={styles.text}>Username</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Username"
+              value={name}
+              onChangeText={(text) => setName(text)}
+              textContentType="emailAddress"
+            />
+          </View>
           <View style={styles.loginContent}>
             <Text style={styles.text}>Email</Text>
             <TextInput

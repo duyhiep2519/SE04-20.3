@@ -1,17 +1,18 @@
+import { DrawerActions, useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
 import {
-  View,
-  Text,
+  Alert,
+  Dimensions,
+  ImageBackground,
   StyleSheet,
+  Text,
   TextInput,
   TouchableOpacity,
-  ImageBackground,
-  Dimensions,Alert
+  View,
 } from "react-native";
+import { useDispatch } from "react-redux";
 import firebase from "../firebase";
-import { useSelector, useDispatch } from "react-redux";
-// import { signIn } from "../store/actions/actions";
-import { DrawerActions, useNavigation } from "@react-navigation/native";
+import { signIn } from "../store/actions/actions";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
@@ -22,6 +23,7 @@ const imageBackground = {
 const Login = () => {
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
+
   const navigation = useNavigation();
 
   const dispatch = useDispatch();
@@ -31,13 +33,12 @@ const Login = () => {
       await firebase.auth().signInWithEmailAndPassword(email, pass);
       firebase.auth().onAuthStateChanged((user) => {
         if (user) {
-          dispatch(signIn(email, pass));
-          console.log(user);
+          dispatch(signIn(user.displayName, email, pass));
         }
       });
     } catch (error) {
       console.log(error.message);
-      Alert.alert(error.message)
+      Alert.alert(error.message);
     }
   };
 
@@ -74,7 +75,7 @@ const Login = () => {
               <Text style={styles.textLogin}>Login</Text>
             </TouchableOpacity>
             <Text style={styles.textQuestion}>Do you have an account yet?</Text>
-            <TouchableOpacity           
+            <TouchableOpacity
               onPress={() =>
                 navigation.dispatch(DrawerActions.jumpTo("SignUp"))
               }

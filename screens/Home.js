@@ -7,12 +7,14 @@ import {
   Image,
   ImageBackground,
   ScrollView,
+  StatusBar,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
+import { useSelector } from "react-redux";
 import firebase from "../firebase";
 
 const windowWidth = Dimensions.get("window").width;
@@ -24,6 +26,7 @@ const imageBackground = {
 };
 
 const Home = () => {
+  const isLogin = useSelector((state) => state.login);
   const navigation = useNavigation();
   const [searchInput, setSearchInput] = useState();
   const [places, setPlaces] = useState([]);
@@ -43,6 +46,7 @@ const Home = () => {
 
   return (
     <ScrollView>
+      <StatusBar hidden />
       <View style={{ backgroundColor: "#bdc3c7" }}>
         <ImageBackground
           source={imageBackground}
@@ -60,17 +64,8 @@ const Home = () => {
                   navigation.dispatch(DrawerActions.openDrawer());
                 }}
               />
-              <Feather
-                name="bell"
-                size={29}
-                color="white"
-                style={{
-                  position: "absolute",
-                  top: 38,
-                  left: windowWidth - 60,
-                }}
-              />
-              <Text style={styles.greet}>Welcome!</Text>
+              <Text style={styles.greet}>{isLogin.username}!</Text>
+
               <Text style={styles.text}>Where would you like to go?</Text>
             </View>
             <View style={styles.searchContent}>
@@ -87,8 +82,8 @@ const Home = () => {
                 color="white"
                 style={{
                   position: "absolute",
-                  top: 60,
-                  left: windowWidth - 50,
+                  top: windowHeight / 19,
+                  left: windowWidth - 60,
                 }}
                 onPress={() => {
                   if (searchInput) {
@@ -145,10 +140,12 @@ const Home = () => {
             View All
           </Text>
         </View>
-        <View>
+        <View style={{ overflow: "hidden" }}>
           <FlatList
             horizontal
             data={places.slice(0, 11)}
+            snapToInterval={windowWidth / 2}
+            decelerationRate="fast"
             renderItem={({ item }) => (
               <View style={styles.flatListTopPlaces}>
                 <TouchableOpacity
@@ -176,43 +173,6 @@ const Home = () => {
             keyExtractor={(item) => item.id}
           />
         </View>
-
-        <View style={styles.travel}>
-          <Text style={{ fontSize: 30, fontWeight: "bold" }}> Services </Text>
-
-          <View style={styles.services}>
-            <Text
-              onPress={() =>
-                navigation.dispatch(DrawerActions.jumpTo("Flight"))
-              }
-              style={styles.textServices}
-            >
-              <MaterialIcons name="flight" size={26} color="black" />
-              Flight
-            </Text>
-            <Text
-              onPress={() => navigation.dispatch(DrawerActions.jumpTo("Train"))}
-              style={styles.textServices}
-            >
-              <MaterialIcons name="train" size={24} color="black" />
-              Train
-            </Text>
-            <Text
-              onPress={() => navigation.dispatch(DrawerActions.jumpTo("Boat"))}
-              style={styles.textServices}
-            >
-              <MaterialIcons name="directions-boat" size={24} color="black" />
-              Boat
-            </Text>
-            <Text
-              onPress={() => navigation.dispatch(DrawerActions.jumpTo("Bus"))}
-              style={styles.textServices}
-            >
-              <MaterialIcons name="directions-bus" size={24} color="black" />
-              Bus
-            </Text>
-          </View>
-        </View>
       </View>
     </ScrollView>
   );
@@ -225,14 +185,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   text: {
-    fontSize: 18,
+    fontSize: 25,
     color: "#fff",
-    // fontFamily: "notoserif",
+    marginTop: windowHeight / 9,
   },
   greet: {
-    fontSize: 40,
+    fontSize: 20,
     fontWeight: "bold",
-    color: "#fff",
+    color: "#ffffff",
+    position: "absolute",
+    right: 0,
+    top: 30,
+
     // fontFamily: "notoserif",
   },
   homeOverlay: {
@@ -253,8 +217,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     width: "95%",
     padding: 10,
-    marginLeft: 10,
-    marginTop: 50,
+    marginLeft: 5,
+    marginTop: windowHeight / 29,
     borderBottomRightRadius: 40,
     borderTopLeftRadius: 40,
   },
@@ -264,7 +228,8 @@ const styles = StyleSheet.create({
     borderRadius: 15,
   },
   flatListTopPlaces: {
-    paddingHorizontal: 15,
+    paddingHorizontal: 10,
+    width: windowWidth / 2,
   },
   imageOverlay: {
     position: "absolute",
@@ -274,19 +239,5 @@ const styles = StyleSheet.create({
     height: windowHeight / 3,
     borderRadius: 15,
     opacity: 0.3,
-  },
-  travel: {
-    marginTop: windowHeight / 19,
-    paddingBottom: 40,
-  },
-  services: {
-    flex: 1,
-    justifyContent: "space-around",
-    alignItems: "center",
-  },
-  textServices: {
-    fontSize: 22,
-    marginTop: windowHeight / 18,
-    fontFamily: "Roboto",
   },
 });
