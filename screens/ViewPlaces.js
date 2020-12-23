@@ -18,6 +18,7 @@ import {
 import places from "../data/places";
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
+const textColor = "#130f40";
 const ViewPlaces = () => {
   const navigation = useNavigation();
   const route = useRoute();
@@ -29,18 +30,15 @@ const ViewPlaces = () => {
         style={styles.arrowBack}
         onPress={() => navigation.navigate("Home")}
       >
-        <Text style={{ color: "#e84118", fontSize: 18 }}>
-          <AntDesign
-            style={{ color: "#e84118", fontSize: 18 }}
-            name="arrowleft"
-          />
-          Back to Home
+        <Text>
+          <AntDesign style={{ color: "#000", fontSize: 28 }} name="left" />
         </Text>
       </TouchableOpacity>
 
       <View style={styles.listPlaces}>
         {route.params ? (
           <FlatList
+            showsVerticalScrollIndicator={false}
             keyExtractor={(item) => item.id}
             data={route.params.resSearch}
             renderItem={({ item }) => (
@@ -52,12 +50,12 @@ const ViewPlaces = () => {
                     );
                   }}
                 >
-                  <View style={{ marginTop: 20 }}>
-                    <Text style={{ fontSize: 16, fontWeight: "bold" }}>
+                  <View style={{ marginTop: 20, marginLeft: 20 }}>
+                    <Text style={{ fontSize: 18, fontWeight: "bold" }}>
                       {item.place}
                     </Text>
                   </View>
-                  <Image source={item.image} style={styles.imageTopPlaces} />
+                  <Image source={item.image[0]} style={styles.imageTopPlaces} />
                   <View style={styles.imageOverlay}></View>
                 </TouchableOpacity>
               </View>
@@ -66,32 +64,45 @@ const ViewPlaces = () => {
           />
         ) : (
           <FlatList
-            keyExtractor={(item) => item.id}
+            showsVerticalScrollIndicator={false}
             data={places}
             renderItem={({ item }) => (
-              <View style={styles.flatListTopPlaces}>
-                <TouchableOpacity
-                  onPress={() => {
-                    navigation.dispatch(
-                      DrawerActions.jumpTo("Details", { place: item })
-                    );
-                  }}
-                >
-                  <View style={{ marginTop: 20 }}>
-                    <Text
-                      style={{
-                        fontSize: 22,
-                        fontWeight: "bold",
-                        marginBottom: 20,
-                      }}
-                    >
-                      {item.place}
-                    </Text>
-                  </View>
-                  <Image source={item.image} style={styles.imageTopPlaces} />
-                  <View style={styles.imageOverlay}></View>
-                </TouchableOpacity>
-              </View>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.dispatch(
+                    DrawerActions.jumpTo("Details", { place: item })
+                  );
+                }}
+              >
+                <Image source={item.image[0]} style={styles.imageTopPlaces} />
+
+                <View style={styles.description}>
+                  <Text
+                    style={{
+                      fontSize: 26,
+                      fontWeight: "bold",
+                      color: "#fff",
+                      marginTop: 10,
+                      marginBottom: 10,
+                    }}
+                  >
+                    <AntDesign name="flag" color="#fff" size={22} />{" "}
+                    {item.place}
+                  </Text>
+
+                  <Text style={{ color: "#fff", fontSize: 18 }}>
+                    <MaterialIcons name="location-on" size={18} color="#fff" />{" "}
+                    Việt Nam
+                  </Text>
+                </View>
+                <View style={styles.star}>
+                  <AntDesign name="star" color="#f1c40f" size={18} />
+                  <AntDesign name="star" color="#f1c40f" size={18} />
+                  <AntDesign name="star" color="#f1c40f" size={18} />
+                  <AntDesign name="star" color="#f1c40f" size={18} />
+                  <AntDesign name="star" color="#f1c40f" size={18} />
+                </View>
+              </TouchableOpacity>
             )}
             keyExtractor={(item) => item.id}
           />
@@ -107,36 +118,37 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  flatList: {
+    flex: 1,
+    overflow: "hidden",
+    marginTop: 10,
+    paddingBottom: 25,
+  },
+
   imageTopPlaces: {
-    width: windowWidth - 20,
-    height: windowHeight / 2.8,
-    borderRadius: 15,
-    paddingHorizontal: 10,
-  },
-  flatListTopPlaces: {
-    paddingHorizontal: 15,
-  },
-  imageOverlay: {
-    position: "absolute",
-    top: windowHeight / 17.5,
+    width: windowWidth / 1.3,
+    height: windowHeight / 2,
     backgroundColor: "#000",
-    width: windowWidth - 20,
-    height: windowHeight / 2.8,
-    borderRadius: 15,
-    opacity: 0.3,
+    borderRadius: 20,
+    marginTop: 10,
+    marginHorizontal: 20,
+    marginBottom: 20,
+  },
+  description: {
+    color: textColor,
+    position: "absolute",
+    bottom: 40,
+    left: 20,
   },
 
-  viewPlaces: {
-    marginTop: 30,
-  },
-
-  listPlaces: {
-    marginTop: 50,
+  star: {
+    position: "absolute",
+    flexDirection: "row",
+    bottom: 0,
+    left: 25,
   },
   arrowBack: {
-    position: "absolute",
-    top: 20,
-    left: 10,
-    height: 40,
+    marginTop: 60,
+    marginRight: windowWidth / 1.2,
   },
 });

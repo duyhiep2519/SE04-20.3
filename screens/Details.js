@@ -1,4 +1,4 @@
-import { AntDesign, Entypo } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
 import {
   DrawerActions,
   useNavigation,
@@ -6,14 +6,15 @@ import {
 } from "@react-navigation/native";
 import React from "react";
 import {
+  Button,
   Dimensions,
-  ImageBackground,
+  FlatList,
+  Image,
   ScrollView,
   StyleSheet,
   Text,
-  View,
-  Button,
   TouchableOpacity,
+  View,
 } from "react-native";
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
@@ -25,44 +26,60 @@ const Details = () => {
   return (
     <ScrollView>
       {route.params ? (
-        <View>
-          <ImageBackground
-            source={route.params.place.image}
-            style={{ width: "100%", height: windowHeight / 2.5 }}
-            imageStyle={{ borderBottomRightRadius: 70 }}
-          >
-            <View style={styles.detailOverlay}>
+        <View style={styles.container}>
+          <View style={{ marginTop: 20, marginRight: windowHeight / 2 }}>
+            <TouchableOpacity onPress={() => navigation.goBack()}>
               <AntDesign
-                onPress={() => navigation.goBack()}
                 style={styles.backArrow}
-                name="arrowleft"
-                size={26}
-                color="#fff"
+                name="left"
+                size={28}
+                color="#000"
               />
-              <View>
-                <Text style={styles.placeName}>
-                  <Entypo name="location-pin" size={24} color="#fff" />
-                  {route.params.place.name}, {route.params.place.place}
-                </Text>
+            </TouchableOpacity>
+          </View>
+          <View>
+            <Text
+              style={{
+                fontSize: 22,
+                fontWeight: "bold",
+                marginRight: windowWidth / 2.3,
+                marginTop: 20,
+              }}
+            >
+              {route.params.place.name}
+            </Text>
+            <Text
+              style={{
+                fontSize: 22,
+                fontWeight: "bold",
+                marginRight: windowWidth / 2.3,
+              }}
+            >
+              {route.params.place.place}
+            </Text>
+          </View>
+          <FlatList
+            horizontal
+            data={route.params.place.image}
+            renderItem={({ item }) => (
+              <View style={styles.imageBackground}>
+                <Image source={item} style={styles.image} />
+                <View style={styles.location}>
+                  <Text style={styles.placeName}>
+                    {route.params.place.name}
+                  </Text>
+                  <Text style={styles.placeName}>
+                    5 <AntDesign name="star" color="#f1c40f" size={18} />
+                  </Text>
+                </View>
               </View>
-            </View>
-          </ImageBackground>
+            )}
+            keyExtractor={(item, index) => "key" + index}
+            showsHorizontalScrollIndicator={false}
+          />
           <View style={styles.introPlace}>
-            <View style={styles.book}>
-              <Text style={styles.about}>
-                <AntDesign name="infocirlce" size={24} color="black" /> About
-              </Text>
-              <TouchableOpacity
-                style={styles.buttonBook}
-                onPress={() =>
-                  navigation.dispatch(DrawerActions.jumpTo("Flight"))
-                }
-              >
-                <Text style={styles.textBook}>
-                  <AntDesign name="plus" size={20} color="black" /> Book now
-                </Text>
-              </TouchableOpacity>
-            </View>
+            <Text style={styles.about}>About</Text>
+
             <Text style={styles.introText}>{route.params.place.intro}</Text>
           </View>
         </View>
@@ -94,65 +111,51 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  detailOverlay: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
+  imageBackground: {
+    marginTop: 120,
+    width: windowWidth - 60,
     height: windowHeight / 2.5,
-    backgroundColor: "#000",
-    opacity: 0.6,
+    borderRadius: 40,
+    textAlign: "center",
+    backgroundColor: "#f1f2f6",
+    shadowColor: "blue",
+    shadowOffset: { width: 5, height: 5 },
+    shadowOpacity: 0.2,
+    // add shadows for Android only
+    // No options for shadow color, shadow offset, shadow opacity like iOS
+    elevation: 10,
+    marginHorizontal: 10,
+    marginBottom: 20,
+  },
+  image: {
+    position: "absolute",
+    bottom: 90,
+    left: 18,
+    width: windowWidth / 1.3,
+    height: windowHeight / 2.5,
+    borderRadius: 40,
+  },
+  location: {
+    position: "absolute",
+    bottom: 20,
+    flexDirection: "row",
   },
   placeName: {
-    position: "absolute",
-    top: windowHeight / 2.8,
-    fontSize: 24,
-    fontWeight: "200",
-    color: "#fff",
+    fontSize: 18,
+    marginLeft: 20,
+    marginBottom: 10,
+    marginRight: 100,
   },
   introPlace: {
-    marginTop: 20,
-    paddingHorizontal: 15,
-  },
-  introText: {
-    fontSize: 22,
-    marginBottom: 5,
-  },
-  backArrow: {
-    position: "absolute",
-    left: 5,
-    top: 20,
-  },
-  buttonGoHome: {
-    width: 200,
-    color: "#000",
-    marginTop: 100,
-  },
-  textAlert: {
-    marginTop: windowHeight / 3,
-    paddingHorizontal: 20,
+    marginTop: 30,
+    width: windowWidth - 30,
+    paddingHorizontal: 10,
   },
   about: {
-    fontSize: 24,
+    fontSize: 26,
     marginBottom: 20,
-    fontWeight: "200",
-    color: "#2c3e50",
   },
-  book: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  buttonBook: {
-    width: 150,
-    height: 40,
-    backgroundColor: "#ffd32a",
-    borderRadius: 10,
-    alignItems: "center",
-  },
-  textBook: {
-    fontSize: 20,
-    textAlign: "center",
-    marginTop: 5,
+  introText: {
+    fontSize: 18,
   },
 });

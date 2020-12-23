@@ -47,7 +47,7 @@ const Flight = () => {
       await firebase
         .database()
         .ref()
-        .child("flight_Schedules/flight_Schedules")
+        .child("flight_Schedules/flightSchedules")
         .on("value", (snapshot) => {
           setFlightSchedules(snapshot.val());
         });
@@ -154,14 +154,14 @@ const Flight = () => {
             </View>
             <TouchableOpacity
               style={styles.Find}
-              onPress={() =>
+              onPress={() => {
                 setData(
                   flightSchedules.filter(
                     (item) =>
                       item.from === selectedValue1 && item.to === selectedValue2
                   )
-                )
-              }
+                );
+              }}
             >
               <Text style={{ color: "#fff", fontSize: 22, fontWeight: "bold" }}>
                 Find

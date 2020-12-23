@@ -1,16 +1,16 @@
-import React, { useState } from "react";
-import firebase from "../firebase";
-import {
-  Text,
-  View,
-  StyleSheet,
-  TextInput,
-  ImageBackground,
-  Dimensions,
-  TouchableOpacity,
-  Alert,
-} from "react-native";
 import { DrawerActions, useNavigation } from "@react-navigation/native";
+import React, { useState } from "react";
+import {
+  Alert,
+  Dimensions,
+  ImageBackground,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import firebase from "../firebase";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
