@@ -15,7 +15,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import places from "../data/places";
+
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 const textColor = "#130f40";
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
   },
 
   imageTopPlaces: {
-    width: windowWidth / 1.3,
+    width: windowWidth - 40,
     height: windowHeight / 2,
     backgroundColor: "#000",
     borderRadius: 20,

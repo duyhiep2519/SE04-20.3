@@ -45,8 +45,8 @@ const Home = () => {
           setPlaces(snapshot.val());
         });
     };
-    featchData();
     setViewPlaces(places.slice(3, 10));
+    featchData();
   }, []);
 
   return (
