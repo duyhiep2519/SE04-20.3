@@ -1,10 +1,10 @@
-import { AntDesign } from "@expo/vector-icons";
+import { AntDesign,MaterialIcons } from "@expo/vector-icons";
 import {
   DrawerActions,
   useNavigation,
   useRoute,
 } from "@react-navigation/native";
-import React from "react";
+import React ,{ useEffect, useState } from "react";
 import {
   Dimensions,
   FlatList,
@@ -15,14 +15,26 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import places from "../data/places";
+import firebase from "../firebase";
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 const textColor = "#130f40";
 const ViewPlaces = () => {
   const navigation = useNavigation();
   const route = useRoute();
-
+  const [places, setPlaces] = useState([]);
+  useEffect(() => {
+    const featchData = async () => {
+      await firebase
+        .database()
+        .ref()
+        .child("places/places")
+        .on("value", (snapshot) => {
+          setPlaces(snapshot.val());
+        });
+    };
+    featchData();
+  }, []);
   return (
     <View style={styles.container}>
       <StatusBar hidden />
