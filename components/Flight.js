@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { AntDesign } from "@expo/vector-icons";
 import { Picker } from "@react-native-picker/picker";
 import {
@@ -54,6 +54,17 @@ const Flight = () => {
     };
     featchData();
   }, []);
+  const createDataFlight=()=>{
+    const useRef=firebase.database().ref().child('users')
+    const user=firebase.auth().currentUser
+    const date = new Date()
+      useRef.push({
+        Name:isLogin.username,
+        Email:user.email,
+        Date:date.toString(),
+        Seat:20 
+    });
+  }
 
   return (
     <ScrollView>
@@ -284,6 +295,7 @@ const Flight = () => {
                             }}
                             onPress={() => {
                               setModalVisible(!modalVisible);
+                              createDataFlight();
                             }}
                           >
                             <Text style={styles.textStyle}>
