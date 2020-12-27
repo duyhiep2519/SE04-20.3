@@ -1,23 +1,22 @@
-import React, { useState, useEffect } from "react";
-import { AntDesign } from "@expo/vector-icons";
+import { AntDesign, FontAwesome, Ionicons, Entypo } from "@expo/vector-icons";
 import { Picker } from "@react-native-picker/picker";
+import React, { useEffect, useState } from "react";
 import {
-  Alert,
   Dimensions,
   FlatList,
-  Modal,
   ScrollView,
+  StatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
-  StatusBar,
+  LogBox,
 } from "react-native";
+
 import { useSelector } from "react-redux";
-
 import firebase from "../firebase";
-
 import BackgroundCurve from "../helper/BackgroundCurve";
+
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
@@ -25,10 +24,19 @@ const Flight = () => {
   const isLogin = useSelector((state) => state.login);
   const [provinces, setProvinces] = useState([]);
   const [flightSchedules, setFlightSchedules] = useState([]);
-  const [selectedValue1, setSelectedValue1] = useState("");
-  const [selectedValue2, setSelectedValue2] = useState("");
+  const [ticket, setTicket] = useState({
+    name: "",
+    email: "",
+    from: "",
+    to: "",
+    class: "",
+    traveler: undefined,
+  });
+  useEffect(() => {
+    setTicket({ ...ticket, name: isLogin.name, email: isLogin.email });
+  }, []);
+
   const [data, setData] = useState();
-  const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
     const featchData = async () => {
@@ -90,81 +98,100 @@ const Flight = () => {
               elevation: 19,
             }}
           >
-            <View style={styles.PickerForm}>
-              <Text
-                style={{
-                  fontSize: 24,
-                  color: "#34495e",
-                  fontWeight: "bold",
-                }}
-              >
-                From <AntDesign name="enviroment" size={24} color="black" />
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <View style={styles.PickerForm}>
+                <Picker
+                  style={{ height: 50, width: 150 }}
+                  selectedValue={ticket}
+                  onValueChange={(itemValue) =>
+                    setTicket({ ...ticket, from: itemValue })
+                  }
+                >
+                  <Picker.Item label="From" value=""></Picker.Item>
+                  {provinces.map((item) => (
+                    <Picker.Item
+                      label={item.place}
+                      value={item.name}
+                      key={item.id}
+                    />
+                  ))}
+                </Picker>
+              </View>
+              <Text>
+                <AntDesign name="arrowright" color="#000" size={20} />
               </Text>
-              <Picker
-                style={{ height: 50, width: 300 }}
-                selectedValue={selectedValue1}
-                onValueChange={(itemValue) => setSelectedValue1(itemValue)}
-              >
-                <Picker.Item label="From..." value=""></Picker.Item>
-                {provinces.map((item) => (
-                  <Picker.Item
-                    label={item.place}
-                    value={item.name}
-                    key={item.id}
-                  />
-                ))}
-              </Picker>
-            </View>
-            <View style={styles.PickerForm}>
-              <Text
-                style={{
-                  fontSize: 24,
-                  color: "#34495e",
-                  fontWeight: "bold",
-                }}
-              >
-                To <AntDesign name="enviroment" size={24} color="black" />
-              </Text>
-              <Picker
-                style={{ width: 300, height: 50 }}
-                selectedValue={selectedValue2}
-                onValueChange={(itemValue, itemIndex) =>
-                  setSelectedValue2(itemValue)
-                }
-              >
-                <Picker.Item label="To..." value=""></Picker.Item>
-                {provinces.map((item) => (
-                  <Picker.Item
-                    label={item.place}
-                    value={item.name}
-                    key={item.id}
-                  />
-                ))}
-              </Picker>
+              <View style={styles.PickerForm}>
+                <Picker
+                  style={{ width: 150, height: 50 }}
+                  selectedValue={ticket}
+                  onValueChange={(itemValue, itemIndex) =>
+                    setTicket({ ...ticket, to: itemValue })
+                  }
+                >
+                  <Picker.Item label="To" value=""></Picker.Item>
+                  {provinces.map((item) => (
+                    <Picker.Item
+                      label={item.place}
+                      value={item.name}
+                      key={item.id}
+                    />
+                  ))}
+                </Picker>
+              </View>
             </View>
 
             <View style={styles.PickerResult}>
-              <Text style={styles.PickerResultItem}>{selectedValue1}</Text>
-              {selectedValue2 ? (
+              <Text style={styles.PickerResultItem}>{ticket.from}</Text>
+              {ticket.to ? (
                 <Text style={styles.PickerResultItem}>
                   <AntDesign name="swap" size={20} />
                 </Text>
               ) : null}
-              <Text style={styles.PickerResultItem}>{selectedValue2}</Text>
+              <Text style={styles.PickerResultItem}>{ticket.to}</Text>
+            </View>
+
+            <View style={styles.class}>
+              <Picker
+                style={{ width: 140, height: 50 }}
+                selectedValue={ticket}
+                onValueChange={(itemValue, itemIndex) =>
+                  setTicket({ ...ticket, traveler: itemValue })
+                }
+              >
+                <Picker.Item label="Traveler" value=""></Picker.Item>
+                <Picker.Item label="1 traveler" value={1}></Picker.Item>
+                <Picker.Item label="2 traveler" value={2}></Picker.Item>
+                <Picker.Item label="3 traveler" value={3}></Picker.Item>
+              </Picker>
+              <Picker
+                style={{ width: 140, height: 50 }}
+                selectedValue={ticket}
+                onValueChange={(itemValue, itemIndex) =>
+                  setTicket({ ...ticket, class: itemValue })
+                }
+              >
+                <Picker.Item label="Class" value=""></Picker.Item>
+                <Picker.Item label="Economy" value="Economy"></Picker.Item>
+                <Picker.Item label="Business" value="Business"></Picker.Item>
+              </Picker>
             </View>
             <TouchableOpacity
               style={styles.Find}
               onPress={() => {
                 setData(
                   flightSchedules.filter(
-                    (item) =>
-                      item.from === selectedValue1 && item.to === selectedValue2
+                    (item) => item.from === ticket.from && item.to === ticket.to
                   )
                 );
               }}
             >
-              <Text style={{ color: "#fff", fontSize: 22, fontWeight: "bold" }}>
-                Find
+              <Text>
+                <FontAwesome name="paper-plane" color="#fff" size={22} />
               </Text>
             </TouchableOpacity>
           </View>
@@ -184,119 +211,52 @@ const Flight = () => {
             </Text>
             <FlatList
               data={data}
-              contentContainerStyle={{ paddingHorizontal: 20 }}
+              keyExtractor={(item) => item.id_flight}
               renderItem={({ item }) => (
-                <View style={styles.ListFlightItem}>
-                  <TouchableOpacity
-                    onPress={() => setModalVisible(!modalVisible)}
-                  >
-                    <Text
-                      style={{
-                        fontSize: 24,
-                        color: "#000",
-                        marginLeft: windowWidth / 7,
-                      }}
-                    >
-                      Flight infomation{" "}
-                      <AntDesign name="checkcircleo" size={24} />
+                <View style={styles.ticket}>
+                  <View style={styles.ticketInfo}>
+                    <Text style={{ color: "#000", fontSize: 25 }}>
+                      ${item.price}
                     </Text>
-                    <Text
-                      style={{
-                        color: "#000",
-                        fontSize: 22,
-                        fontWeight: "bold",
-                      }}
-                    >
-                      <AntDesign name="barcode" size={22} color="black" />{" "}
-                      Flight code : {item.id_flight}
+                    <Text style={{ color: "#000", fontSize: 20 }}>
+                      4.5
+                      <AntDesign name="star" color="#f1c40f" size={20} />{" "}
                     </Text>
-                    <Text style={{ fontSize: 14, color: "#000" }}>
-                      {item.from} <AntDesign name="arrowright" /> {item.to}
+                    <TouchableOpacity style={styles.btnBook}>
+                      <Text
+                        style={{
+                          color: "#000",
+                          fontSize: 20,
+                          textAlign: "center",
+                        }}
+                      >
+                        Book
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                  <View style={styles.ticketInfo}>
+                    <Text style={styles.ticketItem}>
+                      <AntDesign name="calendar" color="#000" size={18} />{" "}
+                      {item.date} - {item.time}{" "}
                     </Text>
-
-                    <Text style={{ fontSize: 22, color: "#000" }}>
-                      <AntDesign name="calendar" size={22} /> {item.date}
-                      {"   "}
-                      {item.time}
+                    <Text style={styles.ticketItem}>
+                      <Ionicons name="ios-airplane" color="#000" size={18} />{" "}
+                      {item.id_flight}
                     </Text>
-                  </TouchableOpacity>
-
-                  <View style={styles.centeredView}>
-                    <Modal
-                      animationType="none"
-                      transparent={true}
-                      visible={modalVisible}
-                      onRequestClose={() => {
-                        Alert.alert("Modal has been closed.");
-                        setModalVisible(!modalVisible);
-                      }}
-                    >
-                      <View style={styles.centeredView}>
-                        <View style={styles.modalView}>
-                          <View
-                            style={{
-                              paddingHorizontal: 15,
-                            }}
-                          >
-                            <Text
-                              style={{
-                                color: "#000",
-                                fontSize: 25,
-                                fontWeight: "bold",
-                                marginLeft: 20,
-                              }}
-                            >
-                              <AntDesign name="infocirlceo" size={23} /> Name :
-                              {isLogin.username}
-                            </Text>
-                            <Text
-                              style={{
-                                color: "#000",
-                                fontSize: 22,
-                                fontWeight: "bold",
-                                textDecorationLine: "underline",
-                              }}
-                            >
-                              <AntDesign
-                                name="barcode"
-                                size={22}
-                                color="black"
-                              />{" "}
-                              Flight code : {item.id_flight} {"  "} GATE : 2
-                            </Text>
-                            <Text style={{ fontSize: 14, color: "#000" }}>
-                              {item.from} <AntDesign name="arrowright" />{" "}
-                              {item.to}
-                            </Text>
-
-                            <Text style={{ fontSize: 22, color: "#000" }}>
-                              <AntDesign name="calendar" size={22} />{" "}
-                              {item.date}
-                              {"   "}
-                              {item.time}
-                            </Text>
-                          </View>
-
-                          <TouchableOpacity
-                            style={{
-                              ...styles.openButton,
-                              backgroundColor: "#2196F3",
-                            }}
-                            onPress={() => {
-                              setModalVisible(!modalVisible);
-                            }}
-                          >
-                            <Text style={styles.textStyle}>
-                              Book <AntDesign name="book" />
-                            </Text>
-                          </TouchableOpacity>
-                        </View>
-                      </View>
-                    </Modal>
+                    <Text style={styles.ticketItem}>{item.from}</Text>
+                  </View>
+                  <View style={styles.ticketInfo}>
+                    <Text style={styles.ticketItem}>
+                      <AntDesign name="addusergroup" color="#000" size={18} />{" "}
+                      {ticket.traveler}
+                    </Text>
+                    <Text style={styles.ticketItem}>
+                      <Entypo name="bookmark" color="#000" size={18} />{" "}
+                      {ticket.class}
+                    </Text>
                   </View>
                 </View>
               )}
-              keyExtractor={(item) => item.id_flight}
             />
           </View>
         )}
@@ -311,29 +271,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     borderRadius: 10,
   },
-  ListFlight: {
-    flex: 1,
-    justifyContent: "space-around",
-  },
-  ListFlightItem: {
-    flex: 1,
-    alignItems: "stretch",
-    justifyContent: "space-around",
-    padding: 16,
-    marginTop: 20,
-    backgroundColor: "#fff",
-    borderRadius: 15,
-    borderWidth: 1,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 9,
-    },
-    shadowOpacity: 0.5,
-    shadowRadius: 12.35,
 
-    elevation: 19,
-  },
   Find: {
     flex: 1,
     width: 150,
@@ -361,65 +299,46 @@ const styles = StyleSheet.create({
   },
   PickerResult: {
     flex: 1,
+    flexDirection: "row",
     justifyContent: "space-around",
-    padding: 20,
     alignItems: "center",
     backgroundColor: "#ecf0f1",
-    marginTop: 20,
+
     borderRadius: 15,
   },
   PickerResultItem: {
-    fontSize: 18,
+    fontSize: 13,
     color: "#000",
   },
-  text: {
-    fontSize: 20,
-    color: "#000",
-    marginLeft: windowWidth / 10,
-  },
-  centeredView: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 22,
-  },
-  modalView: {
-    margin: 20,
-    backgroundColor: "#fff",
-    borderRadius: 20,
-    paddingTop: 30,
-    paddingHorizontal: 5,
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-  },
-  openButton: {
-    backgroundColor: "#F194FF",
-    borderRadius: 10,
-    padding: 15,
-    width: 150,
-    marginBottom: 5,
 
-    elevation: 2,
-  },
-  textStyle: {
-    color: "white",
-    fontWeight: "bold",
-    textAlign: "center",
-  },
-  modalText: {
-    marginBottom: 15,
-    textAlign: "center",
-  },
   svg: {
     position: "absolute",
     width: Dimensions.get("window").width,
     top: 0,
+  },
+  class: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-evenly",
+  },
+  ticket: {
+    borderWidth: 1,
+    margin: 10,
+    backgroundColor: "#e67e22",
+    borderRadius: 10,
+  },
+  ticketInfo: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    padding: 10,
+  },
+  ticketItem: {
+    fontSize: 13,
+  },
+  btnBook: {
+    width: 60,
+    height: 30,
+    backgroundColor: "#ecf0f1",
+    borderRadius: 10,
   },
 });

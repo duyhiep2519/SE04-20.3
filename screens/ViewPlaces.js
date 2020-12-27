@@ -1,9 +1,5 @@
 import { AntDesign } from "@expo/vector-icons";
-import {
-  DrawerActions,
-  useNavigation,
-  useRoute,
-} from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import React from "react";
 import {
   Dimensions,
@@ -25,7 +21,12 @@ const ViewPlaces = () => {
 
   return (
     <View style={styles.container}>
-      <StatusBar hidden />
+      <StatusBar
+        barStyle="dark-content"
+        hidden={false}
+        backgroundColor="#ecf0f1"
+        translucent={true}
+      />
       <TouchableOpacity
         style={styles.arrowBack}
         onPress={() => navigation.navigate("Home")}
@@ -45,9 +46,7 @@ const ViewPlaces = () => {
               <View style={styles.flatListTopPlaces}>
                 <TouchableOpacity
                   onPress={() => {
-                    navigation.dispatch(
-                      DrawerActions.jumpTo("Details", { place: item })
-                    );
+                    navigation.navigate("Details", { place: item });
                   }}
                 >
                   <View style={{ marginTop: 20, marginLeft: 20 }}>
@@ -69,9 +68,7 @@ const ViewPlaces = () => {
             renderItem={({ item }) => (
               <TouchableOpacity
                 onPress={() => {
-                  navigation.dispatch(
-                    DrawerActions.jumpTo("Details", { place: item })
-                  );
+                  navigation.navigate("Details", { place: item });
                 }}
               >
                 <Image source={item.image[0]} style={styles.imageTopPlaces} />

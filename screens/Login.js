@@ -1,4 +1,4 @@
-import { DrawerActions, useNavigation } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
 import {
   Alert,
@@ -9,6 +9,7 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  StatusBar,
 } from "react-native";
 import { useDispatch } from "react-redux";
 import firebase from "../firebase";
@@ -16,10 +17,7 @@ import { signIn } from "../store/actions/actions";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
-const imageBackground = {
-  uri:
-    "https://www.freevector.com/uploads/vector/preview/12939/FreeVector-Travel-Background.jpg",
-};
+
 const Login = () => {
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
@@ -45,13 +43,16 @@ const Login = () => {
 
   return (
     <ImageBackground
-      source={imageBackground}
+      source={require("../assets/background.jpg")}
       style={{ width: "100%", height: windowHeight }}
     >
+      <StatusBar
+        barStyle="dark-content"
+        hidden={false}
+        backgroundColor="#ecf0f1"
+        translucent={true}
+      />
       <View style={styles.container}>
-        <View style={{ marginTop: 50 }}>
-          <Text style={styles.title}>Login</Text>
-        </View>
         <View style={styles.login}>
           <View style={styles.loginContent}>
             <Text style={styles.text}>Email</Text>
@@ -71,19 +72,17 @@ const Login = () => {
               onChangeText={(text) => setPass(text)}
             />
           </View>
-          <View style={styles.button}>
-            <TouchableOpacity onPress={handleLogin}>
-              <Text style={styles.textLogin}>Login</Text>
-            </TouchableOpacity>
-            <Text style={styles.textQuestion}>Do you have an account yet?</Text>
-            <TouchableOpacity
-              onPress={() =>
-                navigation.dispatch(DrawerActions.jumpTo("SignUp"))
-              }
-            >
-              <Text style={styles.textLogin}>Sign Up</Text>
-            </TouchableOpacity>
-          </View>
+
+          <TouchableOpacity style={styles.button} onPress={handleLogin}>
+            <Text style={{ color: "#fff" }}>Login</Text>
+          </TouchableOpacity>
+          <Text style={styles.textQuestion}>Do you have an account yet?</Text>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => navigation.navigate("SignUp")}
+          >
+            <Text style={{ color: "#fff" }}>Sign Up</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </ImageBackground>
@@ -96,22 +95,20 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  title: {
-    fontSize: 28,
-    fontWeight: "bold",
-  },
+
   input: {
     backgroundColor: "#fff",
-    width: "60%",
+    width: "70%",
     padding: 10,
-    borderRadius: 10,
-    height: 50,
+    borderRadius: 20,
+    height: 60,
   },
   text: {
     minWidth: 100,
     padding: 10,
     textAlign: "left",
     color: "#fff",
+    fontSize: 18,
   },
   login: {
     flex: 1,
@@ -123,27 +120,20 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
   },
-  textLogin: {
-    fontSize: 22,
-    color: "#fff",
-    marginLeft: 150,
-    backgroundColor: "#3498db",
-    width: 100,
-    height: 30,
-    textAlign: "center",
-  },
-  buttonSignUp: {
-    textAlign: "center",
-    width: 100,
-  },
+
   textQuestion: {
     fontSize: 18,
-    color: "#000",
-    marginTop: 20,
-    marginBottom: 20,
+    color: "#fff",
+    paddingVertical: 10,
+    marginBottom: 15,
   },
   button: {
-    flex: 4,
-    marginRight: 100,
+    justifyContent: "center",
+    alignItems: "center",
+    width: 230,
+    height: 70,
+    borderRadius: 35,
+    backgroundColor: "#ff9ff3",
+    marginBottom: 15,
   },
 });

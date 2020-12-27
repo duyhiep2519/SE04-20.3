@@ -15,7 +15,9 @@ import {
   Text,
   TouchableOpacity,
   View,
+  StatusBar,
 } from "react-native";
+import StarReview from "../helper/StarReview";
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
@@ -25,18 +27,14 @@ const Details = () => {
 
   return (
     <ScrollView>
+      <StatusBar
+        barStyle="dark-content"
+        hidden={false}
+        backgroundColor="#ecf0f1"
+        translucent={true}
+      />
       {route.params ? (
         <View style={styles.container}>
-          <View style={{ marginTop: 20, marginRight: windowHeight / 2 }}>
-            <TouchableOpacity onPress={() => navigation.goBack()}>
-              <AntDesign
-                style={styles.backArrow}
-                name="left"
-                size={28}
-                color="#000"
-              />
-            </TouchableOpacity>
-          </View>
           <View>
             <Text
               style={{
@@ -69,7 +67,7 @@ const Details = () => {
                     {route.params.place.name}
                   </Text>
                   <Text style={styles.placeName}>
-                    5 <AntDesign name="star" color="#f1c40f" size={18} />
+                    <StarReview rate={4.5} />
                   </Text>
                 </View>
               </View>
@@ -82,6 +80,14 @@ const Details = () => {
 
             <Text style={styles.introText}>{route.params.place.intro}</Text>
           </View>
+          <TouchableOpacity
+            style={styles.btnBook}
+            onPress={() => navigation.navigate("Flight")}
+          >
+            <Text style={{ color: "#000", fontSize: 22, textAlign: "center" }}>
+              Book now
+            </Text>
+          </TouchableOpacity>
         </View>
       ) : (
         <View style={styles.container}>
@@ -93,7 +99,7 @@ const Details = () => {
           <View style={styles.buttonGoHome}>
             <Button
               onPress={() => {
-                navigation.dispatch(DrawerActions.jumpTo("Home"));
+                navigation.navigate("Home");
               }}
               title="Go back to Home screen"
             ></Button>
@@ -139,12 +145,13 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 20,
     flexDirection: "row",
+
+    alignItems: "center",
   },
   placeName: {
     fontSize: 18,
-    marginLeft: 20,
     marginBottom: 10,
-    marginRight: 100,
+    marginLeft: "10%",
   },
   introPlace: {
     marginTop: 30,
@@ -157,5 +164,20 @@ const styles = StyleSheet.create({
   },
   introText: {
     fontSize: 18,
+  },
+  btnBook: {
+    width: 150,
+    height: 40,
+
+    justifyContent: "center",
+    backgroundColor: "#f1f2f6",
+    shadowColor: "blue",
+    shadowOffset: { width: 5, height: 5 },
+    shadowOpacity: 0.2,
+    // add shadows for Android only
+    // No options for shadow color, shadow offset, shadow opacity like iOS
+    elevation: 10,
+
+    marginVertical: 30,
   },
 });
