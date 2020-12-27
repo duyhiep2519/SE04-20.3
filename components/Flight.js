@@ -16,6 +16,7 @@ import {
 import { useSelector } from "react-redux";
 import firebase from "../firebase";
 import BackgroundCurve from "../helper/BackgroundCurve";
+import { addTicket } from "../helper/function";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
@@ -24,17 +25,20 @@ const Flight = () => {
   const isLogin = useSelector((state) => state.login);
   const [provinces, setProvinces] = useState([]);
   const [flightSchedules, setFlightSchedules] = useState([]);
+  const [classTicket, setClassTicket] = useState("");
+  const [traveler, setTraveler] = useState("");
   const [ticket, setTicket] = useState({
     name: "",
     email: "",
     from: "",
     to: "",
     class: "",
-    traveler: undefined,
+    traveler: "",
+    time: "",
+    date: "",
+    id_flight: "",
+    price: "",
   });
-  useEffect(() => {
-    setTicket({ ...ticket, name: isLogin.name, email: isLogin.email });
-  }, []);
 
   const [data, setData] = useState();
 
@@ -107,7 +111,7 @@ const Flight = () => {
               <View style={styles.PickerForm}>
                 <Picker
                   style={{ height: 50, width: 150 }}
-                  selectedValue={ticket}
+                  selectedValue={ticket.from}
                   onValueChange={(itemValue) =>
                     setTicket({ ...ticket, from: itemValue })
                   }
@@ -128,7 +132,7 @@ const Flight = () => {
               <View style={styles.PickerForm}>
                 <Picker
                   style={{ width: 150, height: 50 }}
-                  selectedValue={ticket}
+                  selectedValue={ticket.to}
                   onValueChange={(itemValue, itemIndex) =>
                     setTicket({ ...ticket, to: itemValue })
                   }
@@ -158,7 +162,7 @@ const Flight = () => {
             <View style={styles.class}>
               <Picker
                 style={{ width: 140, height: 50 }}
-                selectedValue={ticket}
+                selectedValue={ticket.traveler}
                 onValueChange={(itemValue, itemIndex) =>
                   setTicket({ ...ticket, traveler: itemValue })
                 }
@@ -170,7 +174,7 @@ const Flight = () => {
               </Picker>
               <Picker
                 style={{ width: 140, height: 50 }}
-                selectedValue={ticket}
+                selectedValue={ticket.class}
                 onValueChange={(itemValue, itemIndex) =>
                   setTicket({ ...ticket, class: itemValue })
                 }
@@ -209,55 +213,62 @@ const Flight = () => {
             >
               Result <AntDesign name="tagso" size={30} />
             </Text>
-            <FlatList
-              data={data}
-              keyExtractor={(item) => item.id_flight}
-              renderItem={({ item }) => (
-                <View style={styles.ticket}>
-                  <View style={styles.ticketInfo}>
-                    <Text style={{ color: "#000", fontSize: 25 }}>
-                      ${item.price}
+            {data.map((item) => (
+              <View style={styles.ticket} key={item.id_flight}>
+                <View style={styles.ticketInfo}>
+                  <Text style={{ color: "#000", fontSize: 25 }}>
+                    ${item.price}
+                  </Text>
+                  <Text style={{ color: "#000", fontSize: 20 }}>
+                    4.5
+                    <AntDesign name="star" color="#f1c40f" size={20} />{" "}
+                  </Text>
+                  <TouchableOpacity style={styles.btnBook}>
+                    <Text
+                      style={{
+                        color: "#000",
+                        fontSize: 20,
+                        textAlign: "center",
+                      }}
+                      onPress={() => {
+                        addTicket({
+                          ...ticket,
+                          date: item.date,
+                          time: item.time,
+                          id_flight: item.id_flight,
+                          price: item.price,
+                          name: isLogin.username,
+                          email: isLogin.email,
+                        });
+                      }}
+                    >
+                      Book
                     </Text>
-                    <Text style={{ color: "#000", fontSize: 20 }}>
-                      4.5
-                      <AntDesign name="star" color="#f1c40f" size={20} />{" "}
-                    </Text>
-                    <TouchableOpacity style={styles.btnBook}>
-                      <Text
-                        style={{
-                          color: "#000",
-                          fontSize: 20,
-                          textAlign: "center",
-                        }}
-                      >
-                        Book
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-                  <View style={styles.ticketInfo}>
-                    <Text style={styles.ticketItem}>
-                      <AntDesign name="calendar" color="#000" size={18} />{" "}
-                      {item.date} - {item.time}{" "}
-                    </Text>
-                    <Text style={styles.ticketItem}>
-                      <Ionicons name="ios-airplane" color="#000" size={18} />{" "}
-                      {item.id_flight}
-                    </Text>
-                    <Text style={styles.ticketItem}>{item.from}</Text>
-                  </View>
-                  <View style={styles.ticketInfo}>
-                    <Text style={styles.ticketItem}>
-                      <AntDesign name="addusergroup" color="#000" size={18} />{" "}
-                      {ticket.traveler}
-                    </Text>
-                    <Text style={styles.ticketItem}>
-                      <Entypo name="bookmark" color="#000" size={18} />{" "}
-                      {ticket.class}
-                    </Text>
-                  </View>
+                  </TouchableOpacity>
                 </View>
-              )}
-            />
+                <View style={styles.ticketInfo}>
+                  <Text style={styles.ticketItem}>
+                    <AntDesign name="calendar" color="#000" size={18} />{" "}
+                    {item.date} - {item.time}{" "}
+                  </Text>
+                  <Text style={styles.ticketItem}>
+                    <Ionicons name="ios-airplane" color="#000" size={18} />{" "}
+                    {item.id_flight}
+                  </Text>
+                  <Text style={styles.ticketItem}>{item.from}</Text>
+                </View>
+                <View style={styles.ticketInfo}>
+                  <Text style={styles.ticketItem}>
+                    <AntDesign name="addusergroup" color="#000" size={18} />{" "}
+                    {ticket.traveler}
+                  </Text>
+                  <Text style={styles.ticketItem}>
+                    <Entypo name="bookmark" color="#000" size={18} />{" "}
+                    {ticket.class}
+                  </Text>
+                </View>
+              </View>
+            ))}
           </View>
         )}
       </View>
