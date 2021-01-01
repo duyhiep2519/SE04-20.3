@@ -1,10 +1,7 @@
-import { AntDesign,MaterialIcons } from "@expo/vector-icons";
-import {
-  DrawerActions,
-  useNavigation,
-  useRoute,
-} from "@react-navigation/native";
-import React ,{ useEffect, useState } from "react";
+import { AntDesign } from "@expo/vector-icons";
+import { navigations, useRouter } from "../helper/function";
+
+import React from "react";
 import {
   Dimensions,
   FlatList,
@@ -15,29 +12,22 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import firebase from "../firebase";
+
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 const textColor = "#130f40";
 const ViewPlaces = () => {
-  const navigation = useNavigation();
-  const route = useRoute();
-  const [places, setPlaces] = useState([]);
-  useEffect(() => {
-    const featchData = async () => {
-      await firebase
-        .database()
-        .ref()
-        .child("places/places")
-        .on("value", (snapshot) => {
-          setPlaces(snapshot.val());
-        });
-    };
-    featchData();
-  }, []);
+  const navigation = navigations();
+  const route = useRouter();
+
   return (
     <View style={styles.container}>
-      <StatusBar hidden />
+      <StatusBar
+        barStyle="dark-content"
+        hidden={false}
+        backgroundColor="#ecf0f1"
+        translucent={true}
+      />
       <TouchableOpacity
         style={styles.arrowBack}
         onPress={() => navigation.navigate("Home")}
@@ -57,9 +47,7 @@ const ViewPlaces = () => {
               <View style={styles.flatListTopPlaces}>
                 <TouchableOpacity
                   onPress={() => {
-                    navigation.dispatch(
-                      DrawerActions.jumpTo("Details", { place: item })
-                    );
+                    navigation.navigate("Details", { place: item });
                   }}
                 >
                   <View style={{ marginTop: 20, marginLeft: 20 }}>
@@ -81,9 +69,7 @@ const ViewPlaces = () => {
             renderItem={({ item }) => (
               <TouchableOpacity
                 onPress={() => {
-                  navigation.dispatch(
-                    DrawerActions.jumpTo("Details", { place: item })
-                  );
+                  navigation.navigate("Details", { place: item });
                 }}
               >
                 <Image source={item.image[0]} style={styles.imageTopPlaces} />
@@ -138,7 +124,7 @@ const styles = StyleSheet.create({
   },
 
   imageTopPlaces: {
-    width: windowWidth / 1.3,
+    width: windowWidth - 40,
     height: windowHeight / 2,
     backgroundColor: "#000",
     borderRadius: 20,

@@ -1,5 +1,5 @@
 import { AntDesign, FontAwesome, MaterialIcons } from "@expo/vector-icons";
-import { DrawerActions, useNavigation } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import {
   Dimensions,
@@ -13,8 +13,11 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { useSelector } from "react-redux";
+import { navigations } from "../helper/function";
+
 import firebase from "../firebase";
+import StarReview from "../helper/StarReview";
+
 const textColor = "#130f40";
 const unPressable = "#b2bec3";
 
@@ -22,11 +25,10 @@ const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
 const Home = () => {
-  const isLogin = useSelector((state) => state.login);
-  const navigation = useNavigation();
   const [searchInput, setSearchInput] = useState();
   const [places, setPlaces] = useState([]);
   const [viewPlaces, setViewPlaces] = useState([]);
+  const navigation = navigations();
 
   const [toogle, setToogle] = useState({
     new: unPressable,
@@ -43,34 +45,22 @@ const Home = () => {
         .child("places/places")
         .on("value", (snapshot) => {
           setPlaces(snapshot.val());
+          setViewPlaces(snapshot.val().slice(5, 15));
         });
     };
+
     featchData();
-    setViewPlaces(places.slice(3, 10));
   }, []);
 
   return (
     <ScrollView>
+      <StatusBar
+        barStyle="dark-content"
+        hidden={false}
+        backgroundColor="#ecf0f1"
+        translucent={true}
+      />
       <View style={styles.container}>
-        <StatusBar hidden />
-        <View style={styles.user}>
-          <TouchableOpacity
-            onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
-          >
-            <AntDesign name="appstore1" size={38} color={textColor} />
-          </TouchableOpacity>
-          <View style={{ marginLeft: windowWidth / 4 }}>
-            <Text style={styles.greet}>
-              {isLogin.username}{" "}
-              <FontAwesome
-                name="user-circle-o"
-                size={30}
-                color="#000"
-              ></FontAwesome>
-            </Text>
-          </View>
-        </View>
-
         <View>
           <Text
             style={{
@@ -123,9 +113,7 @@ const Home = () => {
                           .includes(searchInput.toLowerCase())
                     );
 
-                    navigation.dispatch(
-                      DrawerActions.jumpTo("ViewPlaces", { resSearch: res })
-                    );
+                    navigation.navigate("ViewPlaces", { resSearch: res });
                     setSearchInput("");
                   }
                 }}
@@ -135,7 +123,7 @@ const Home = () => {
         </View>
         <View style={styles.menuTravel}>
           <TouchableOpacity
-            onPress={() => navigation.dispatch(DrawerActions.jumpTo("Flight"))}
+            onPress={() => navigation.navigate("Flight")}
             style={styles.menuTravelIItem}
           >
             <Text>
@@ -210,9 +198,7 @@ const Home = () => {
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() =>
-                navigation.dispatch(
-                  DrawerActions.jumpTo("ViewPlaces", { resSearch: places })
-                )
+                navigation.navigate("ViewPlaces", { resSearch: places })
               }
               style={styles.menuListItem}
             >
@@ -227,9 +213,7 @@ const Home = () => {
             renderItem={({ item }) => (
               <TouchableOpacity
                 onPress={() => {
-                  navigation.dispatch(
-                    DrawerActions.jumpTo("Details", { place: item })
-                  );
+                  navigation.navigate("Details", { place: item });
                 }}
               >
                 <Image source={item.image[0]} style={styles.imageTopPlaces} />
@@ -254,11 +238,7 @@ const Home = () => {
                   </Text>
                 </View>
                 <View style={styles.star}>
-                  <AntDesign name="star" color="#f1c40f" size={18} />
-                  <AntDesign name="star" color="#f1c40f" size={18} />
-                  <AntDesign name="star" color="#f1c40f" size={18} />
-                  <AntDesign name="star" color="#f1c40f" size={18} />
-                  <AntDesign name="star" color="#f1c40f" size={18} />
+                  <StarReview rate={4.5} />
                 </View>
               </TouchableOpacity>
             )}
@@ -275,16 +255,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     backgroundColor: "#fff",
-  },
-  user: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-evenly",
-    marginTop: 30,
-  },
-  greet: {
-    color: textColor,
-    fontSize: 26,
   },
 
   searchContent: {
@@ -309,7 +279,7 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 20,
-    backgroundColor: "#ff9ff3",
+    backgroundColor: "#686de0",
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
@@ -324,7 +294,7 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 20,
-    backgroundColor: "#ff9ff3",
+    backgroundColor: "#686de0",
     alignItems: "center",
     justifyContent: "center",
   },
