@@ -1,5 +1,6 @@
 import { AntDesign } from "@expo/vector-icons";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { navigations, useRouter } from "../helper/function";
+
 import React from "react";
 import {
   Dimensions,
@@ -16,8 +17,8 @@ const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 const textColor = "#130f40";
 const ViewPlaces = () => {
-  const navigation = useNavigation();
-  const route = useRoute();
+  const navigation = navigations();
+  const route = useRouter();
 
   return (
     <View style={styles.container}>

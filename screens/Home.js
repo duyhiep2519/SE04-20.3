@@ -13,7 +13,8 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { useSelector } from "react-redux";
+import { navigations } from "../helper/function";
+
 import firebase from "../firebase";
 import StarReview from "../helper/StarReview";
 
@@ -24,11 +25,10 @@ const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
 const Home = () => {
-  const isLogin = useSelector((state) => state.login);
-  const navigation = useNavigation();
   const [searchInput, setSearchInput] = useState();
   const [places, setPlaces] = useState([]);
   const [viewPlaces, setViewPlaces] = useState([]);
+  const navigation = navigations();
 
   const [toogle, setToogle] = useState({
     new: unPressable,
@@ -279,7 +279,7 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 20,
-    backgroundColor: "#ff9ff3",
+    backgroundColor: "#686de0",
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
@@ -294,7 +294,7 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 20,
-    backgroundColor: "#ff9ff3",
+    backgroundColor: "#686de0",
     alignItems: "center",
     justifyContent: "center",
   },

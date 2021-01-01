@@ -1,20 +1,31 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
-  View,
+  Dimensions,
+  Image,
+  ScrollView,
   StyleSheet,
   Text,
-  Image,
-  Dimensions,
-  ScrollView,
   TouchableOpacity,
+  View,
 } from "react-native";
-import { useSelector } from "react-redux";
+
 import BackgroundCurve from "../helper/BackgroundCurve";
+import { getCurrentUser, navigations } from "../helper/function";
+import firebase from "../firebase";
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
 const User = () => {
-  const isLogin = useSelector((state) => state.login);
+  const [user, setUser] = useState(firebase.auth().currentUser);
+
+  //handle restart
+
+  const handleRestart = () => {
+    setUser(getCurrentUser());
+  };
+
+  const navigation = navigations();
+
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -26,20 +37,22 @@ const User = () => {
               fontSize: 28,
               marginTop: 10,
               fontWeight: "bold",
-              marginLeft: "10%",
             }}
           >
-            {isLogin.username}
+            {user.displayName}
           </Text>
           <Text style={{ color: "#000", fontSize: 15 }}>
-            Email :{isLogin.email}
+            Email :{user.email}
           </Text>
         </View>
 
         <View>
           <Image
             style={styles.image}
-            source={require("../assets/icons/profile.jpg")}
+            source={{
+              uri:
+                "https://th.bing.com/th/id/OIP.eIdhXYnjprkmU6wS-aYdSAHaH1?w=182&h=192&c=7&o=5&pid=1.7",
+            }}
           ></Image>
         </View>
         <View style={styles.listMenu}>
@@ -49,8 +62,14 @@ const User = () => {
           <TouchableOpacity style={styles.menu}>
             <Text style={styles.menuContent}>Support</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.menu}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("Profile")}
+            style={styles.menu}
+          >
             <Text style={styles.menuContent}>Account</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={handleRestart} style={styles.menu}>
+            <Text style={styles.menuContent}>Refesh</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -73,6 +92,7 @@ const styles = StyleSheet.create({
   infoUser: {
     position: "absolute",
     top: "15%",
+    alignItems: "center",
   },
   image: {
     width: windowWidth / 2,

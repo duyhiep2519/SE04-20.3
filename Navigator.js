@@ -4,7 +4,8 @@ import { useSelector } from "react-redux";
 import { createStackNavigator } from "@react-navigation/stack";
 import Flight from "./components/Flight";
 import Details from "./screens/Details";
-import Home from "./screens/Home";
+import Profile from "./components/Profile";
+import Picker from "./components/ImagePicker";
 import Login from "./screens/Login";
 import SignUp from "./screens/SignUp";
 import ViewPlaces from "./screens/ViewPlaces";
@@ -70,6 +71,16 @@ const Navigator = () => {
           <Stack.Screen
             name="ViewPlaces"
             component={ViewPlaces}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Profile"
+            component={Profile}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Picker"
+            component={Picker}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>
