@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { createStackNavigator } from "@react-navigation/stack";
 import Flight from "./components/Flight";
 import Details from "./screens/Details";
+import Tickets from "./components/Tickets";
 import Profile from "./components/Profile";
 import Picker from "./components/ImagePicker";
 import Login from "./screens/Login";
@@ -81,6 +82,11 @@ const Navigator = () => {
           <Stack.Screen
             name="Picker"
             component={Picker}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Tickets"
+            component={Tickets}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>

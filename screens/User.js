@@ -56,9 +56,13 @@ const User = () => {
           ></Image>
         </View>
         <View style={styles.listMenu}>
-          <TouchableOpacity style={styles.menu}>
+          <TouchableOpacity 
+            style={styles.menu}
+            onPress={() => navigation.navigate("Tickets")}
+            >
             <Text style={styles.menuContent}>Ticket</Text>
           </TouchableOpacity>
+          
           <TouchableOpacity style={styles.menu}>
             <Text style={styles.menuContent}>Support</Text>
           </TouchableOpacity>
