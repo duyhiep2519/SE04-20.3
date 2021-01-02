@@ -54,65 +54,49 @@ const SignUp = () => {
         translucent={true}
       />
       <View style={styles.container}>
-        <View style={{ flexDirection: 'row' }}>
-          <TouchableOpacity
-            style={styles.buttonHeader}
-            onPress={() => navigation.navigate("Login")
-            }
-          >
-            <Text style={{ color: "#fff", fontSize: 18 }}>Sign In</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.buttonHeader}
-            onPress={() => navigation.navigate("SignUp")}
-          >
-            <Text style={{ color: "#fff", fontSize: 18 }}>Sign Up</Text>
-          </TouchableOpacity>
-
-        </View>
+        <View style={{ marginTop: 50 }}></View>
         <View style={styles.login}>
-          <View>
-            <Text style={styles.text}>FULL NAME</Text>
+          <View style={styles.loginContent}>
+            <Text style={styles.text}>Username</Text>
             <TextInput
               style={styles.input}
-              placeholder="Enter your full name"
-              placeholderTextColor={'#D1D0D0'}
+              placeholder="Username"
               value={name}
-              fontSize={15}
               onChangeText={(text) => setName(text)}
               textContentType="emailAddress"
             />
           </View>
-          <View>
-            <Text style={styles.text}>E-MAIL</Text>
+          <View style={styles.loginContent}>
+            <Text style={styles.text}>Email</Text>
             <TextInput
               style={styles.input}
-              placeholder="Your e-mail goes here"
+              placeholder="Email"
               value={email}
-              fontSize={15}
-              placeholderTextColor={'#D1D0D0'}
               onChangeText={(text) => setEmail(text)}
               textContentType="emailAddress"
             />
           </View>
-          <View>
-            <Text style={styles.text}>PASSWORD</Text>
+          <View style={styles.loginContent}>
+            <Text style={styles.text}>Password</Text>
             <TextInput
               style={styles.input}
               placeholder="Password"
-              placeholderTextColor={'#D1D0D0'}
               value={pass}
-              fontSize={15}
               onChangeText={(text) => setPass(text)}
               textContentType="password"
             />
           </View>
 
           <TouchableOpacity style={styles.button} onPress={signUp}>
-            <Text style={{ color: "#fff", fontSize: 18 }}>Create Account</Text>
+            <Text style={{ color: "#fff" }}>Sign Up</Text>
           </TouchableOpacity>
-
+          <Text style={styles.textQuestion}>Do you have an account yet?</Text>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => navigation.navigate("Login")}
+          >
+            <Text style={{ color: "#fff" }}>Login</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </ImageBackground>
@@ -126,26 +110,37 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+
   input: {
-    width: 400,
-    paddingLeft: 12,
+    backgroundColor: "#fff",
+    width: "70%",
+    padding: 10,
     borderRadius: 20,
     height: 60,
-    borderBottomColor: '#ddd',
-    borderBottomWidth: 1
   },
   text: {
     minWidth: 100,
-    paddingLeft: 12,
+    padding: 10,
     textAlign: "left",
     color: "#fff",
-    fontSize: 20,
+    fontSize: 18,
   },
   login: {
-    flex: 0.8,
+    flex: 1,
     justifyContent: "space-around",
     alignItems: "center",
-    marginTop: 50,
+    marginTop: 100,
+  },
+  loginContent: {
+    flex: 1,
+    flexDirection: "row",
+  },
+
+  textQuestion: {
+    fontSize: 18,
+    color: "#fff",
+    paddingVertical: 10,
+    marginBottom: 15,
   },
   button: {
     justifyContent: "center",
@@ -153,17 +148,7 @@ const styles = StyleSheet.create({
     width: 230,
     height: 70,
     borderRadius: 35,
-    backgroundColor: "#0FEDFC",
+    backgroundColor: "#ff9ff3",
     marginBottom: 15,
-    marginTop: 20
-  },
-  buttonHeader: {
-    justifyContent: "center",
-    alignItems: "center",
-    width: 150,
-    height: 50,
-    borderRadius: 25,
-    borderBottomWidth: 1.5,
-    top: '-5%'
   },
 });
