@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   View,
   StatusBar,
+  Image
 } from "react-native";
 import { useDispatch } from "react-redux";
 import firebase from "../firebase";
@@ -53,8 +54,31 @@ const Login = () => {
         translucent={true}
       />
       <View style={styles.container}>
+
+        <View style={{ flexDirection: 'row' }}>
+          <TouchableOpacity
+            style={styles.buttonHeader}
+            onPress={() => navigation.navigate("Login")}
+          >
+            <Text style={{ color: "#fff", fontSize: 18 }}>Sign In</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.buttonHeader}
+            onPress={() => navigation.navigate("SignUp")}
+          >
+            <Text style={{ color: "#fff", fontSize: 18 }}>Sign Up</Text>
+          </TouchableOpacity>
+
+        </View>
+        
+          <Image
+          source={require("../assets/icons/travel.png")}
+          style={styles.image}>
+          </Image>
+
         <View style={styles.login}>
-          <View style={styles.loginContent}>
+          <View style={{flexDirection: "row"}}>
             <Text style={styles.text}>Email</Text>
             <TextInput
               style={styles.input}
@@ -63,26 +87,27 @@ const Login = () => {
               onChangeText={(text) => setEmail(text)}
             />
           </View>
-          <View style={styles.loginContent}>
+          <View style={{flexDirection: "row"}}>
             <Text style={styles.text}>Password</Text>
             <TextInput
               style={styles.input}
+              
               placeholder="Password"
               value={pass}
               onChangeText={(text) => setPass(text)}
             />
           </View>
 
-          <TouchableOpacity style={styles.button} onPress={handleLogin}>
-            <Text style={{ color: "#fff" }}>Login</Text>
-          </TouchableOpacity>
-          <Text style={styles.textQuestion}>Do you have an account yet?</Text>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => navigation.navigate("SignUp")}
-          >
-            <Text style={{ color: "#fff" }}>Sign Up</Text>
-          </TouchableOpacity>
+          <View>
+            <Text style={styles.textQuestion}>Forgot password?</Text>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={handleLogin}
+            >
+              <Text style={{ color: "#fff", fontSize: 18 }}>Login</Text>
+            </TouchableOpacity>
+          </View>
+
         </View>
       </View>
     </ImageBackground>
@@ -95,13 +120,26 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-
+  image: {
+    width: 250,
+    height: 250,
+    // opacity: 0.9,
+    marginTop: 20,
+    justifyContent: "center",
+    overflow: 'hidden',
+  },
   input: {
     backgroundColor: "#fff",
     width: "70%",
     padding: 10,
     borderRadius: 20,
     height: 60,
+  },
+  textHeader: {
+    fontSize: 45, color: '#fff',
+    top: '5%',
+    fontWeight: 'bold',
+    marginBottom:100
   },
   text: {
     minWidth: 100,
@@ -111,21 +149,25 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   login: {
-    flex: 1,
+    flex: 0.8,
+    marginTop: 10,
     justifyContent: "space-around",
     alignItems: "center",
-    marginTop: 100,
   },
-  loginContent: {
-    flex: 1,
-    flexDirection: "row",
-  },
-
   textQuestion: {
     fontSize: 18,
     color: "#fff",
-    paddingVertical: 10,
     marginBottom: 15,
+    left: "35%",
+    textDecorationLine: 'underline',
+  },
+  buttonHeader: {
+    justifyContent: "center",
+    alignItems: "center",
+    width: 150,
+    height: 50,
+    borderRadius: 25,
+    borderBottomWidth: 1.5,
   },
   button: {
     justifyContent: "center",
@@ -133,7 +175,7 @@ const styles = StyleSheet.create({
     width: 230,
     height: 70,
     borderRadius: 35,
-    backgroundColor: "#ff9ff3",
-    marginBottom: 15,
+    backgroundColor: "#0FEDFC",
+    marginTop: 20
   },
 });
