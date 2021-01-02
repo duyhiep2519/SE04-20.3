@@ -6,13 +6,32 @@ import {
   Platform,
   TouchableOpacity,
   Text,
+  Alert,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import firebase from "../firebase";
+import { navigations } from "../helper/function";
 
-export default function ImagePickerExample() {
+const ImagePickerExample = () => {
   const [image, setImage] = useState(null);
   const [file, setFile] = useState(null);
+  const navigation = navigations();
+
+  //handle upload
+  const handleUpload = () => {
+    const user = firebase.auth().currentUser;
+    user
+      .updateProfile({
+        photoURL: file.uri,
+      })
+      .then(() => {
+        Alert.alert("Updated image");
+      })
+      .catch((error) => {
+        Alert.alert(error.message);
+      });
+    navigation.navigate("User");
+  };
 
   useEffect(() => {
     (async () => {
@@ -42,12 +61,6 @@ export default function ImagePickerExample() {
       setFile(result);
     }
   };
-  //handle upload
-  const handleUpload = () => {
-    const user = firebase.auth().currentUser;
-    const storageRef = firebase.storage().ref("avatar/" + user.displayName);
-    storageRef.put(file);
-  };
 
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
@@ -55,9 +68,10 @@ export default function ImagePickerExample() {
       {image && (
         <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
       )}
-      <TouchableOpacity onpress={handleUpload}>
-        <Text style={{ color: "#000" }}>Upload</Text>
+      <TouchableOpacity style={{ marginTop: 100 }} onPress={handleUpload}>
+        <Text style={{ color: "#000", fontSize: 28 }}>Upload</Text>
       </TouchableOpacity>
     </View>
   );
-}
+};
+export default ImagePickerExample;

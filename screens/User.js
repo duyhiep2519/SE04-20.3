@@ -17,6 +17,7 @@ const windowHeight = Dimensions.get("window").height;
 
 const User = () => {
   const [user, setUser] = useState(firebase.auth().currentUser);
+  console.log(user);
 
   //handle restart
 
@@ -50,8 +51,7 @@ const User = () => {
           <Image
             style={styles.image}
             source={{
-              uri:
-                "https://th.bing.com/th/id/OIP.eIdhXYnjprkmU6wS-aYdSAHaH1?w=182&h=192&c=7&o=5&pid=1.7",
+              uri: user.photoUrl,
             }}
           ></Image>
         </View>
