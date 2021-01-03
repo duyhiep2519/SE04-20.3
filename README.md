@@ -1,9 +1,8 @@
-# :point_right: SE04-20.3 :point_left:
-# :airplane: Project Travel App :airplane:
-## :hospital: Giáo viên hướng dẫn:
-### :man:  [Thầy Bùi Sỹ Nguyên](https://www.facebook.com/groups/3090155857777168/user/614170901/)
-
-## Thành viên nhóm:
+<h1 align="center"> :point_right: SE04-20.3 :point_left:</h1>
+<h2 align="center"> :airplane: Project Travel App :airplane: </h2>
+<h2 align="center">  :hospital: Giáo viên hướng dẫn: </h2>
+<h3 align="center"> :man:  [Thầy Bùi Sỹ Nguyên](https://www.facebook.com/groups/3090155857777168/user/614170901/) </h3>
+<h2 align="center"> Thành viên nhóm: </h2>
 ### :boy:  [Trần Duy Hiệp](https://www.facebook.com/duyhiep2519)
 ### :boy:  [Bùi Thái Hiếu](https://www.facebook.com/lionel1120/)
 ### :boy:  Nguyễn Đình Đương
