@@ -6,3 +6,6 @@ export const signIn = (name, email, pass) => {
     pass: pass,
   };
 };
+export const signOut = () => {
+  return { type: "SignOut" };
+};

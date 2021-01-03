@@ -1,5 +1,4 @@
 import { AntDesign, FontAwesome, MaterialIcons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import {
   Dimensions,
@@ -13,9 +12,8 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { navigations } from "../helper/function";
-
 import firebase from "../firebase";
+import { navigations } from "../helper/function";
 import StarReview from "../helper/StarReview";
 
 const textColor = "#130f40";

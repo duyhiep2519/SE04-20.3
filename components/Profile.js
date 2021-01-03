@@ -8,8 +8,12 @@ import {
   Modal,
   Alert,
   TextInput,
+  StatusBar,
 } from "react-native";
 import { navigations } from "../helper/function";
+import { useDispatch } from "react-redux";
+import { signOut } from "../store/actions/actions";
+import { AntDesign } from "@expo/vector-icons";
 
 import firebase from "../firebase";
 const Profile = () => {
@@ -20,9 +24,25 @@ const Profile = () => {
   const [email, setEmail] = useState("");
   const [profile, setProfile] = useState({ name: "", photoUrl: "" });
   const navigation = navigations();
+  const dispatch = useDispatch();
   return (
     <ScrollView>
       <View style={styles.container}>
+        <StatusBar
+          barStyle="dark-content"
+          hidden={false}
+          backgroundColor="#ecf0f1"
+          translucent={true}
+        />
+        <TouchableOpacity
+          style={styles.arrowBack}
+          onPress={() => navigation.navigate("User")}
+        >
+          <Text style={{ color: "#000", fontSize: 28 }}>
+            <AntDesign style={{ color: "#000", fontSize: 28 }} name="left" />{" "}
+            Back
+          </Text>
+        </TouchableOpacity>
         <TouchableOpacity
           style={styles.change}
           onPress={() => {
@@ -46,10 +66,12 @@ const Profile = () => {
                 <Text style={styles.modalText}>New Username</Text>
                 <TextInput
                   style={{
-                    height: 40,
                     width: "90%",
-                    borderColor: "gray",
-                    borderWidth: 1,
+                    paddingLeft: 12,
+                    borderRadius: 20,
+                    height: 60,
+                    borderBottomColor: "#ddd",
+                    borderBottomWidth: 1,
                     marginVertical: 10,
                   }}
                   onChangeText={(text) =>
@@ -58,27 +80,39 @@ const Profile = () => {
                   value={profile.name}
                 />
 
-                <TouchableOpacity
-                  style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
-                  onPress={() => {
-                    setModalProfile(!modalProfile);
-                    const user = firebase.auth().currentUser;
-                    user
-                      .updateProfile({
-                        displayName: profile.name,
-                        photoURL: profile.photoUrl,
-                      })
-                      .then(() => {
-                        Alert.alert("Updated profile");
-                      })
-                      .catch((error) => {
-                        Alert.alert(error.message);
-                      });
-                    navigation.navigate("User");
-                  }}
-                >
-                  <Text style={styles.textStyle}>Change</Text>
-                </TouchableOpacity>
+                <View style={{ flexDirection: "row" }}>
+                  <TouchableOpacity
+                    style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
+                    onPress={() => {
+                      setModalProfile(!modalProfile);
+                      const user = firebase.auth().currentUser;
+                      user
+                        .updateProfile({
+                          displayName: profile.name,
+                          photoURL: profile.photoUrl,
+                        })
+                        .then(() => {
+                          Alert.alert("Updated profile");
+                        })
+                        .catch((error) => {
+                          Alert.alert(error.message);
+                        });
+                      navigation.navigate("User");
+                    }}
+                  >
+                    <Text style={styles.textStyle}>Change</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
+                    onPress={() => {
+                      setModalProfile(!modalProfile);
+
+                      navigation.navigate("Profile");
+                    }}
+                  >
+                    <Text style={styles.textStyle}>Cancel</Text>
+                  </TouchableOpacity>
+                </View>
               </View>
             </View>
           </Modal>
@@ -104,35 +138,53 @@ const Profile = () => {
               <View style={styles.modalView}>
                 <Text style={styles.modalText}>New password</Text>
                 <TextInput
+                  textContentType="password"
                   style={{
-                    height: 40,
                     width: "90%",
-                    borderColor: "gray",
-                    borderWidth: 1,
+                    paddingLeft: 12,
+                    borderRadius: 20,
+                    height: 60,
+                    borderBottomColor: "#ddd",
+                    borderBottomWidth: 1,
                     marginVertical: 10,
                   }}
                   onChangeText={(text) => setPassword(text)}
                   value={password}
                 />
 
-                <TouchableOpacity
-                  style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
-                  onPress={() => {
-                    setModalPassword(!modalPassword);
-                    const user = firebase.auth().currentUser;
+                <View style={{ flexDirection: "row" }}>
+                  <TouchableOpacity
+                    style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
+                    onPress={() => {
+                      setModalProfile(!modalProfile);
+                      const user = firebase.auth().currentUser;
+                      user
+                        .updateProfile({
+                          displayName: profile.name,
+                          photoURL: profile.photoUrl,
+                        })
+                        .then(() => {
+                          Alert.alert("Updated profile");
+                        })
+                        .catch((error) => {
+                          Alert.alert(error.message);
+                        });
+                      navigation.navigate("User");
+                    }}
+                  >
+                    <Text style={styles.textStyle}>Change</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
+                    onPress={() => {
+                      setModalPassword(!modalPassword);
 
-                    user
-                      .updatePassword(password)
-                      .then(() => {
-                        Alert.alert("Updated password");
-                      })
-                      .catch((error) => {
-                        Alert.alert(error.message);
-                      });
-                  }}
-                >
-                  <Text style={styles.textStyle}>Change</Text>
-                </TouchableOpacity>
+                      navigation.navigate("Profile");
+                    }}
+                  >
+                    <Text style={styles.textStyle}>Cancel</Text>
+                  </TouchableOpacity>
+                </View>
               </View>
             </View>
           </Modal>
@@ -158,34 +210,48 @@ const Profile = () => {
                 <Text style={styles.modalText}>New email</Text>
                 <TextInput
                   style={{
-                    height: 40,
                     width: "90%",
-                    borderColor: "gray",
-                    borderWidth: 1,
+                    paddingLeft: 12,
+                    borderRadius: 20,
+                    height: 60,
+                    borderBottomColor: "#ddd",
+                    borderBottomWidth: 1,
                     marginVertical: 10,
                   }}
                   onChangeText={(text) => setEmail(text)}
                   value={email}
                 />
 
-                <TouchableOpacity
-                  style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
-                  onPress={() => {
-                    setModalEmail(!modalEmail);
-                    const user = firebase.auth().currentUser;
-                    user
-                      .updateEmail(email)
-                      .then(() => {
-                        Alert.alert("Updated email");
-                      })
-                      .catch((error) => {
-                        Alert.alert(error.message);
-                      });
-                    navigation.navigate("User");
-                  }}
-                >
-                  <Text style={styles.textStyle}>Change</Text>
-                </TouchableOpacity>
+                <View style={{ flexDirection: "row" }}>
+                  <TouchableOpacity
+                    style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
+                    onPress={() => {
+                      setModalEmail(!modalEmail);
+                      const user = firebase.auth().currentUser;
+                      user
+                        .updateEmail(email)
+                        .then(() => {
+                          Alert.alert("Updated email");
+                        })
+                        .catch((error) => {
+                          Alert.alert(error.message);
+                        });
+                      navigation.navigate("User");
+                    }}
+                  >
+                    <Text style={styles.textStyle}>Change</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
+                    onPress={() => {
+                      setModalEmail(!modalEmail);
+
+                      navigation.navigate("Profile");
+                    }}
+                  >
+                    <Text style={styles.textStyle}>Cancel</Text>
+                  </TouchableOpacity>
+                </View>
               </View>
             </View>
           </Modal>
@@ -195,6 +261,15 @@ const Profile = () => {
           onPress={() => navigation.navigate("Picker")}
         >
           <Text style={styles.text}>Upload Image</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.change}
+          onPress={() => {
+            Alert.alert("Sign out!!");
+            dispatch(signOut());
+          }}
+        >
+          <Text style={styles.text}>Sign Out</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
@@ -269,5 +344,9 @@ const styles = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: "center",
+  },
+  arrowBack: {
+    marginTop: "10%",
+    marginRight: "70%",
   },
 });

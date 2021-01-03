@@ -4,12 +4,12 @@ import {
   Alert,
   Dimensions,
   ImageBackground,
+  StatusBar,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
-  StatusBar,
 } from "react-native";
 import firebase from "../firebase";
 
@@ -31,6 +31,7 @@ const SignUp = () => {
           user.updateProfile({
             displayName: name,
           });
+          Alert.alert("Successful!!");
           navigation.navigate("Login");
         } else {
           console.log("Loi");
@@ -54,11 +55,10 @@ const SignUp = () => {
         translucent={true}
       />
       <View style={styles.container}>
-        <View style={{ flexDirection: 'row' }}>
+        <View style={{ flexDirection: "row" }}>
           <TouchableOpacity
             style={styles.buttonHeader}
-            onPress={() => navigation.navigate("Login")
-            }
+            onPress={() => navigation.navigate("Login")}
           >
             <Text style={{ color: "#fff", fontSize: 18 }}>Sign In</Text>
           </TouchableOpacity>
@@ -69,7 +69,6 @@ const SignUp = () => {
           >
             <Text style={{ color: "#fff", fontSize: 18 }}>Sign Up</Text>
           </TouchableOpacity>
-
         </View>
         <View style={styles.login}>
           <View>
@@ -77,7 +76,7 @@ const SignUp = () => {
             <TextInput
               style={styles.input}
               placeholder="Enter your full name"
-              placeholderTextColor={'#D1D0D0'}
+              placeholderTextColor={"#D1D0D0"}
               value={name}
               fontSize={15}
               onChangeText={(text) => setName(text)}
@@ -91,7 +90,7 @@ const SignUp = () => {
               placeholder="Your e-mail goes here"
               value={email}
               fontSize={15}
-              placeholderTextColor={'#D1D0D0'}
+              placeholderTextColor={"#D1D0D0"}
               onChangeText={(text) => setEmail(text)}
               textContentType="emailAddress"
             />
@@ -101,18 +100,17 @@ const SignUp = () => {
             <TextInput
               style={styles.input}
               placeholder="Password"
-              placeholderTextColor={'#D1D0D0'}
+              placeholderTextColor={"#D1D0D0"}
               value={pass}
               fontSize={15}
               onChangeText={(text) => setPass(text)}
-              textContentType="password"
+              secureTextEntry={true}
             />
           </View>
 
           <TouchableOpacity style={styles.button} onPress={signUp}>
             <Text style={{ color: "#fff", fontSize: 18 }}>Create Account</Text>
           </TouchableOpacity>
-
         </View>
       </View>
     </ImageBackground>
@@ -127,12 +125,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   input: {
-    width: 400,
+    width: windowWidth - 40,
     paddingLeft: 12,
     borderRadius: 20,
     height: 60,
-    borderBottomColor: '#ddd',
-    borderBottomWidth: 1
+    borderBottomColor: "#ddd",
+    borderBottomWidth: 1,
   },
   text: {
     minWidth: 100,
@@ -155,7 +153,7 @@ const styles = StyleSheet.create({
     borderRadius: 35,
     backgroundColor: "#0FEDFC",
     marginBottom: 15,
-    marginTop: 20
+    marginTop: 20,
   },
   buttonHeader: {
     justifyContent: "center",
@@ -164,6 +162,6 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 25,
     borderBottomWidth: 1.5,
-    top: '-5%'
+    top: "-5%",
   },
 });

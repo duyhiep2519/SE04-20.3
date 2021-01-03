@@ -1,6 +1,4 @@
 import { AntDesign } from "@expo/vector-icons";
-import { navigations, useRouter } from "../helper/function";
-
 import React from "react";
 import {
   Dimensions,
@@ -12,6 +10,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { navigations, useRouter } from "../helper/function";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
@@ -146,7 +145,7 @@ const styles = StyleSheet.create({
     left: 25,
   },
   arrowBack: {
-    marginTop: 60,
+    marginTop: "20%",
     marginRight: windowWidth / 1.2,
   },
 });

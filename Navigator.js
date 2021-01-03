@@ -1,19 +1,18 @@
+import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
 import "react-native-gesture-handler";
 import { useSelector } from "react-redux";
-import { createStackNavigator } from "@react-navigation/stack";
 import Flight from "./components/Flight";
-import Details from "./screens/Details";
-import Tickets from "./components/Tickets";
-import Profile from "./components/Profile";
 import Picker from "./components/ImagePicker";
+import Profile from "./components/Profile";
+import Tickets from "./components/Tickets";
+import TabNavigation from "./navigation/TabNavigation";
+import Details from "./screens/Details";
 import Login from "./screens/Login";
 import SignUp from "./screens/SignUp";
 import ViewPlaces from "./screens/ViewPlaces";
-import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
-import TabNavigation from "./navigation/TabNavigation";
-import icons from "./constants/icons";
-import { TouchableOpacity, Image } from "react-native";
+
 const theme = {
   ...DefaultTheme,
   colors: {
@@ -36,26 +35,10 @@ const Navigator = () => {
             name="Home"
             component={TabNavigation}
             options={{
-              title: "Travel app",
+              title: "TRAVEL APP SE04-20.3",
               headerStyle: {
                 backgroundColor: "#fff",
               },
-
-              headerRight: () => (
-                <TouchableOpacity
-                  style={{ marginRight: 10 }}
-                  onPress={() => console.log("Menu")}
-                >
-                  <Image
-                    source={icons.barMenu}
-                    resizeMode="contain"
-                    style={{
-                      width: 25,
-                      height: 25,
-                    }}
-                  />
-                </TouchableOpacity>
-              ),
             }}
           />
 

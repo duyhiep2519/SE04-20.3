@@ -1,14 +1,11 @@
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React from "react";
 import { Image } from "react-native";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-
-import Home from "../screens/Home";
-import Details from "../screens/Details";
-import ViewPlaces from "../screens/ViewPlaces";
 import Flight from "../components/Flight";
-import User from "../screens/User";
-
 import icons from "../constants/icons";
+import Details from "../screens/Details";
+import Home from "../screens/Home";
+import User from "../screens/User";
 
 const Tab = createBottomTabNavigator();
 

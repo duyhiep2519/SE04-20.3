@@ -1,9 +1,5 @@
 import { AntDesign } from "@expo/vector-icons";
-import {
-  DrawerActions,
-  useNavigation,
-  useRoute,
-} from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import React from "react";
 import {
   Button,
@@ -11,13 +7,14 @@ import {
   FlatList,
   Image,
   ScrollView,
+  StatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
-  StatusBar,
 } from "react-native";
 import StarReview from "../helper/StarReview";
+
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
@@ -33,6 +30,14 @@ const Details = () => {
         backgroundColor="#ecf0f1"
         translucent={true}
       />
+      <TouchableOpacity
+        style={styles.arrowBack}
+        onPress={() => navigation.navigate("Home")}
+      >
+        <Text>
+          <AntDesign style={{ color: "#000", fontSize: 28 }} name="left" />
+        </Text>
+      </TouchableOpacity>
       {route.params ? (
         <View style={styles.container}>
           <View>
@@ -179,5 +184,9 @@ const styles = StyleSheet.create({
     elevation: 10,
 
     marginVertical: 30,
+  },
+  arrowBack: {
+    marginTop: "10%",
+    marginRight: windowWidth / 1.1,
   },
 });
