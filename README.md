@@ -39,7 +39,7 @@
 * Máy ảo Android Studio
 * Githup
 ## b) Cách cài đặt
-*  Đối với Android : Link [apk]()
+*  Đối với Android : Link [apk](https://drive.google.com/file/d/1s4uLdiyt8gNuwmnSXlGBB4DOVrN-aRxj/view?usp=sharing)
 *  IOS : Hiện tại nhóm chạy trên máy ảo
    - Cài đặt [Nodejs](https://nodejs.org/en)
    - Clone repo 
