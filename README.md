@@ -2,7 +2,7 @@
 ## airplane: Project Travel App :airplane: 
 ## :hospital: Giáo viên hướng dẫn: 
 ### :man: [Thầy Bùi Sỹ Nguyên](https://www.facebook.com/groups/3090155857777168/user/614170901/)
-## hành viên nhóm :
+## Thành viên nhóm :
 ### :boy:  [Trần Duy Hiệp](https://www.facebook.com/duyhiep2519)
 ### :boy:  [Bùi Thái Hiếu](https://www.facebook.com/lionel1120/)
 ### :boy:  Nguyễn Đình Đương
